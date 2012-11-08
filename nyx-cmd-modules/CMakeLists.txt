@@ -1,0 +1,34 @@
+# @@@LICENSE
+#
+#      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# LICENSE@@@
+
+include_directories(${CMAKE_SOURCE_DIR}/include/internal/nyx-cmd)
+
+# macro to install nyx-cmd device type libraries into correct place
+# All modules should start with NyxCmdModule and end with device type identifier.
+# As the device type identifier is used for opening the module, case MUST be
+# followed
+macro(nyx_cmd_install_library module)
+	if(${module} MATCHES ^NyxCmdModule)
+		install(TARGETS ${module} DESTINATION ${WEBOS_INSTALL_LIBDIR}/nyx-cmd)
+	else()
+		message(FATAL_ERROR "Module is not named according to naming convention")
+	endif()
+endmacro()
+
+add_subdirectory(system)
+
