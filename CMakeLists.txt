@@ -28,7 +28,30 @@ webos_component(1 0 0 QUALIFIER RC1)
 pkg_check_modules(NYXLIB REQUIRED nyx)
 include_directories(${NYXLIB_INCLUDE_DIRS})
 webos_add_compiler_flags(ALL ${NYXLIB_CFLAGS_OTHER})
-add_definitions(-DNYXCMD_VERSION_INFO="${WEBOS_COMPONENT_VERSION}")
+
+function(nyx_get_pkgconfig_var varname nyx_pkgconfig_var usecache)
+        execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE} --variable=${nyx_pkgconfig_var} nyx
+                        OUTPUT_VARIABLE pkgconfig_output
+                        RESULT_VARIABLE pkgconfig_failed)
+
+        if(NOT pkgconfig_failed)
+                STRING(REGEX REPLACE "(/?\r?\n)+$" "" pkgconfig_output "${pkgconfig_output}")
+                if(usecache)
+                        set(${varname} ${pkgconfig_output} CACHE PATH ${nyx_pkgconfig_var})
+                else()
+                        set(${varname} ${pkgconfig_output} PARENT_SCOPE)
+                endif()
+        else()
+                message(FATAL_ERROR "Error in fetching '${nyx_pkgconfig_var}' from nyx.pc, execute_process() returned ${pkgconfig_failed}")
+        endif()
+endfunction()
+
+nyx_get_pkgconfig_var(NYX_CMD_MODULE_DIR nyx_cmd_module_dir TRUE)
+set(NYX_CMD_MODULE_PREFIX "nyxcmdModule" CACHE STRING "Prefix for nyx-cmd modules")
+
+add_definitions(-DNYX_CMD_MODULE_DIR="${NYX_CMD_MODULE_DIR}")
+add_definitions(-DNYX_CMD_MODULE_PREFIX="${NYX_CMD_MODULE_PREFIX}")
+add_definitions(-DNYX_CMD_VERSION_INFO="${WEBOS_COMPONENT_VERSION}")
 
 add_subdirectory(nyx-cmd)
 add_subdirectory(nyx-cmd-modules)

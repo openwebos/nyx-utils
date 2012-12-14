@@ -19,16 +19,18 @@
 include_directories(${CMAKE_SOURCE_DIR}/include/internal/nyx-cmd)
 
 # macro to install nyx-cmd device type libraries into correct place
-# All modules should start with NyxCmdModule and end with device type identifier.
+#
+# All module names must start with ${NYX_CMD_MODULE_PREFIX} and end with the
+# device type identifier.
+#
 # As the device type identifier is used for opening the module, case MUST be
 # followed
 macro(nyx_cmd_install_library module)
-	if(${module} MATCHES ^NyxCmdModule)
-		install(TARGETS ${module} DESTINATION ${WEBOS_INSTALL_LIBDIR}/nyx-cmd)
+	if(${module} MATCHES ^${NYX_CMD_MODULE_PREFIX})
+		install(TARGETS ${module} DESTINATION ${NYX_CMD_MODULE_DIR})
 	else()
 		message(FATAL_ERROR "Module is not named according to naming convention")
 	endif()
 endmacro()
 
 add_subdirectory(system)
-

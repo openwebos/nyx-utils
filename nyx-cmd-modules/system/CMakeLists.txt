@@ -16,8 +16,7 @@
 #
 # LICENSE@@@
 
-add_library(NyxCmdModuleSystem SHARED nyx_cmd_system.cpp 
-                                      nyx_cmd_system_reboot.cpp)
-target_link_libraries(NyxCmdModuleSystem dl ${NYXLIB_LDFLAGS})
-nyx_cmd_install_library(NyxCmdModuleSystem)
-
+set(moduleName ${NYX_CMD_MODULE_PREFIX}System)
+add_library(${moduleName} SHARED nyx_cmd_system.cpp nyx_cmd_system_reboot.cpp)
+target_link_libraries(${moduleName} ${NYXLIB_LDFLAGS})
+nyx_cmd_install_library(${moduleName})

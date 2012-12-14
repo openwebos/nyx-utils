@@ -30,12 +30,16 @@
 #include <nyx/nyx_client.h>
 #include <nyx/common/nyx_device.h>
 
-#ifndef NYXCMD_LIB_DIR
-#error nyx-cmd library directory not defined!
+#ifndef NYX_CMD_MODULE_DIR
+#error "NYX_CMD_MODULE_DIR not defined!"
 #endif
 
-#ifndef NYXCMD_VERSION_INFO
-#error nyx-cmd version info not defined!
+#ifndef NYX_CMD_MODULE_PREFIX
+#error "NYX_CMD_MODULE_PREFIX not defined!"
+#endif
+
+#ifndef NYX_CMD_VERSION_INFO
+#error "NYX_CMD_VERSION_INFO not defined!"
 #endif
 
 using namespace std;
@@ -68,7 +72,7 @@ static void usage(void)
 
 static void printVersion()
 {
-	fprintf(stderr, "%s\n", NYXCMD_VERSION_INFO);
+	fprintf(stderr, "%s\n", NYX_CMD_VERSION_INFO);
 }
 
 char *resolveArguments(int argc, char **argv)
@@ -148,9 +152,9 @@ int main(int argc, char **argv)
 		NyxCmdDeviceType* (*initialize)(void);
 
 		//create the library path and name
-		string libName(NYXCMD_LIB_DIR);
+		string libName(NYX_CMD_MODULE_DIR);
 		libName.append("/");
-		libName.append("libNyxCmdModule");
+		libName.append("lib" NYX_CMD_MODULE_PREFIX);
 		libName.append(devType);
 		libName.append(".so");
 

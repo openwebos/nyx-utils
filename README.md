@@ -21,7 +21,7 @@ to build _nyx-utils_:
 
 - cmake (version required by openwebos/cmake-modules-webos)
 - gcc 4.6.3
-- nyx-lib 3.0.0 RC1
+- nyx-lib 3.1.0 RC1
 - openwebos/cmake-modules-webos 1.0.0
 - pkg-config 0.26
 

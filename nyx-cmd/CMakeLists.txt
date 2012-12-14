@@ -18,10 +18,7 @@
 
 include_directories(${CMAKE_SOURCE_DIR}/include/internal/nyx-cmd)
 
-set(nyxcmd_lib_dir "${WEBOS_INSTALL_LIBDIR}/nyx-cmd")
-set(CMAKE_INSTALL_RPATH ${nyxcmd_lib_dir})
-add_definitions(-DNYXCMD_LIB_DIR="${nyxcmd_lib_dir}")
-unset(nyxcmd_lib_dir)
+set(CMAKE_INSTALL_RPATH ${NYX_CMD_MODULE_DIR})
 
 add_executable(nyx-cmd ${SRC} main.cpp
                               nyx_cmd_devicetype.cpp
