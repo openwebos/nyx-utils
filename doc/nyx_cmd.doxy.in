@@ -631,7 +631,8 @@ WARN_LOGFILE           =
 # with spaces.
 
 INPUT                  = @CMAKE_SOURCE_DIR@/include/internal/nyx-cmd \
-                         @CMAKE_SOURCE_DIR@/nyx-cmd-modules/system
+                         @CMAKE_SOURCE_DIR@/nyx-cmd-modules/system \
+                         @CMAKE_SOURCE_DIR@/nyx-cmd-modules/device_info
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
