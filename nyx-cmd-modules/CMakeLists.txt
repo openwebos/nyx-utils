@@ -35,3 +35,4 @@ endmacro()
 
 add_subdirectory(system)
 add_subdirectory(device_info)
+add_subdirectory(battery)
