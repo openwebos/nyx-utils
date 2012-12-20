@@ -20,11 +20,12 @@
 #include "nyx_cmd_system_reboot.h"
 
 #include <string>
+#include <sstream>
 
 using namespace std;
 
 static string nameStr = "System";
-static string descriptionStr = "Nyx system device type.";
+static string descriptionStr = "Nyx 'System' device type.";
 
 
 // Name of the device type
@@ -38,6 +39,23 @@ string NyxCmdSystem::Description()
 {
 	return descriptionStr;
 }
+
+//! [Usage info]
+// Usage information for the device type.
+string NyxCmdSystem::Usage()
+{
+	ostringstream usage;
+	usage << "COMMAND" << endl;
+	usage << "  system_reboot [REBOOT_ARGS]\tReboots the device" << endl;
+	usage << "\t\t\t\tIf [REBOOT_ARGS] is not set, defaults to" << endl;
+	usage << "\t\t\t\t'NYX_SYSTEM_NORMAL_SHUTDOWN'" << endl;
+	usage << "REBOOT_ARGS" << endl;
+	usage << "  NYX_SYSTEM_NORMAL_SHUTDOWN\tNormal shutdown" << endl;
+	usage << "  NYX_SYSTEM_EMERG_SHUTDOWN\tEmergency shutdown" << endl;
+	usage << "  NYX_SYSTEM_TEST_SHUTDOWN\tTest shutdown" << endl;
+	return usage.str();
+}
+//! [Usage info]
 
 /*
 * Returns the command object instance by for defined name.

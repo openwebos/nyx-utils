@@ -108,7 +108,9 @@ int NyxCmdSystemReboot::Execute(const char *deviceId, int argc, char **argv)
 */
 nyx_system_shutdown_type_t NyxCmdSystemReboot::resolveArguments(int argc, char **argv)
 {
-	nyx_system_shutdown_type_t retVal = (nyx_system_shutdown_type_t) -1;
+	// defaults to 'NYX_SYSTEM_NORMAL_SHUTDOWN' for cases there isn't any parameters
+	// Unknown arguments are still considered invalid.
+	nyx_system_shutdown_type_t retVal = NYX_SYSTEM_NORMAL_SHUTDOWN;
 
 	if (optind < argc)
 	{
@@ -133,12 +135,6 @@ nyx_system_shutdown_type_t NyxCmdSystemReboot::resolveArguments(int argc, char *
 			retVal = (nyx_system_shutdown_type_t) -1;
 		}
 	}
-	else
-	{
-		cerr << "Not enough arguments" << endl;
-		retVal = (nyx_system_shutdown_type_t) -1;
-	}
-
 
 	return retVal;
 }

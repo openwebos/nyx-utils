@@ -59,7 +59,7 @@ class NyxCmdDeviceType
 
 /**
  * Get the device type specific name.
- * This virtual function needs to be implemented by all nyx-modules (e.g. system)
+ * This virtual function needs to be implemented by all nyx-cmd device type plugins (e.g. system)
  *
  * @return Name for the device type
  *
@@ -67,8 +67,24 @@ class NyxCmdDeviceType
 		virtual std::string Name() = 0;
 
 /**
+ * Get the device type specific usage information.
+ * Note that generic part of usage information is provided so plugins should start with COMMAND
+ * part.
+ *
+ * This virtual function may be implemented by all nyx-cmd device type plugins (e.g. system)
+ *
+ * @return Usage information for the device type
+ *
+ * Example
+ * @snippet nyx_cmd_system.cpp Usage info
+ *
+ */
+		virtual std::string Usage();
+
+
+/**
  * Get the device type specific version information.
- * This virtual function may be implemented by all nyx-modules (e.g. system)
+ * This virtual function may be implemented by all nyx-cmd device type plugins (e.g. system)
  *
  * @return Version information for the device type
  *
@@ -77,7 +93,7 @@ class NyxCmdDeviceType
 
 /**
  * Get the device type specific description.
- * This virtual function needs to be implemented by all nyx-modules (e.g. system)
+ * This virtual function needs to be implemented by all nyx-cmd device type plugins (e.g. system)
  *
  * @return Description for the device type
  *
@@ -99,7 +115,7 @@ class NyxCmdDeviceType
 
 /**
  * Get the correct command based on input string.
- * This virtual function needs to be implemented by all nyx-modules (e.g. system)
+ * This virtual function needs to be implemented by all nyx-cmd device type plugins (e.g. system)
  *
  * @param[in]   cmdName - command name
  *

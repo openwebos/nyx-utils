@@ -19,10 +19,14 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <dlfcn.h>
+#include <dirent.h>
+#include <errno.h>
 
 #include <cstdlib>
 #include <map>
 #include <string>
+#include <cstring>
+#include <list>
 #include <iostream>
 
 #include "nyx_cmd_devicetype.h"
@@ -48,25 +52,36 @@ static char *deviceId = NULL;
 static const char *defaultDevId = "Main";
 
 static bool versionQuery = false;
+static bool usageInfo = false;
 
 static nyx_device_handle_t device = NULL;
 static nyx_system_shutdown_type_t argument;
+
+static void usage(void);
+static void printVersion();
+static char *resolveArguments(int argc, char **argv);
 
 static void usage(void)
 {
 	printf("usage:\n");
 	printf("nyx-cmd [OPTION] [DEVICE-TYPE [COMMAND [ARGS]...]]\n");
-	printf("OPTION\n\tOptional arguments\n");
-	printf("\t-v, --version\n\t\tDisplay version of nyx-cmd when no other arguments are present\n");
-	printf("\t\tDisplay version of device type module when DEVICE-TYPE is specified\n");
-	printf("\t-i, --id\n\t\tSet the device identifier (e.g. -iMyDevId)\n");
-	printf("\t\tUnless specified, uses 'Main'\n");
+	printf("OPTION\n");
+	printf("  v, --version\t\t\tDisplay version of nyx-cmd when no other\n");
+	printf("\t\t\t\targuments are present.\n");
+	printf("\t\t\t\tDisplay version of device type module when DEVICE-TYPE\n");
+	printf("\t\t\t\tis specified.\n");
+	printf("  -i, --id\t\t\tSet the device identifier (e.g. -iMyDevId).\n");
+	printf("\t\t\t\tUnless specified, uses 'Main'.\n");
+	printf("  -?, --help\t\t\tUsage guidance.\n");
+	printf("\t\t\t\tDisplay usage guidance of device type module when\n");
+	printf("\t\t\t\tDEVICE-TYPE is specified.\n");
 	printf("DEVICE-TYPE\n");
-	printf("\tE.g. System\n");
+	printf("  E.g. System\n");
 	printf("COMMAND\n");
-	printf("\tMaps onto one of the functions within the selected API (not all functions are supported). Requires a value for DEVICE-TYPE.\n");
+	printf("  Maps onto one of the functions within the selected API.\n");
+	printf("  Requires a value for DEVICE-TYPE.\n");
 	printf("ARGS\n");
-	printf("\tCOMMAND specific argument lists\n");
+	printf("  COMMAND specific argument lists.\n");
 	exit(EXIT_SUCCESS);
 }
 
@@ -75,7 +90,7 @@ static void printVersion()
 	fprintf(stderr, "%s\n", NYX_CMD_VERSION_INFO);
 }
 
-char *resolveArguments(int argc, char **argv)
+static char *resolveArguments(int argc, char **argv)
 {
 	int c;
 	char *devType = NULL;
@@ -84,6 +99,7 @@ char *resolveArguments(int argc, char **argv)
 	{
 		{"version", optional_argument, 0, 'v' },
 		{"id", required_argument, 0, 'i' },
+		{"help", optional_argument, 0, '?' },
 		{0, 0, 0, 0 }
 	};
 
@@ -113,7 +129,7 @@ char *resolveArguments(int argc, char **argv)
 				versionQuery = true;
 				break;
 			case '?':
-				usage();
+				usageInfo = true;
 				break;
 		}
 
@@ -140,9 +156,12 @@ int main(int argc, char **argv)
 	int retVal = -1;
 	char *devType = resolveArguments(argc, argv);
 
-	// Resolve all libraries. Load the device type which name is specified in the arguments.
-	// Call execute for that library.
-	map<string, string> deviceTypes;
+	if(versionQuery && usageInfo)
+	{
+		// both version query and usage info was wanted, just print usage
+		cout << "Both version query and usage defined, only usage is shown" << endl;
+		versionQuery = false;
+	}
 
 	if(devType)
 	{
@@ -151,7 +170,7 @@ int main(int argc, char **argv)
 		NyxCmdDeviceType* devTypeInstance = NULL;
 		NyxCmdDeviceType* (*initialize)(void);
 
-		//create the library path and name
+		//create the plugin path and name
 		string libName(NYX_CMD_MODULE_DIR);
 		libName.append("/");
 		libName.append("lib" NYX_CMD_MODULE_PREFIX);
@@ -167,7 +186,7 @@ int main(int argc, char **argv)
 
 			// Get pointer to Instance creation function.
 			// The funtion name is used to identify that we are dealing with
-			// the type of library we are interested in.
+			// the type of plugin we are interested in.
 			initialize = (NyxCmdDeviceType* (*)(void)) dlsym( lib_handle, "getNyxCmdDeviceTypeInstance" );
 
 			if (initialize)
@@ -178,6 +197,17 @@ int main(int argc, char **argv)
 					if (versionQuery)
 					{
 						cout << devTypeInstance->Version() << endl;
+					}
+					else if(usageInfo)
+					{
+						// print out the generic guidance so there's no need to have it in each plugin
+						cout << "Usage for " << devTypeInstance->Description() << endl;
+						cout << "nyx-cmd [OPTION] " << devTypeInstance->Name() << " [COMMAND [ARGS]...]]" << endl;
+						cout << "OPTION" << endl;
+						cout << "  -i, --id\t\t\tSet the device identifier (e.g. -iMyDevId)" << endl;
+						cout << "\t\t\t\tUnless specified, uses 'Main'" << endl;
+						cout << "  -?, --help\t\t\tUsage guidance" << endl;
+						cout << devTypeInstance->Usage() << endl;
 					}
 					else
 					{
@@ -204,13 +234,15 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			cerr << "Error opening the library" << endl;
+			cerr << "Error opening the plugin" << endl;
 		}
 	}
 	else
 	{
 		if(versionQuery)
 			printVersion();
+		else if(usageInfo)
+			usage();
 		else
 			cout << "No available device types" << endl;
 	}

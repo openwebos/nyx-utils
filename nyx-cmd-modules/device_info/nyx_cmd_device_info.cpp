@@ -20,18 +20,31 @@
 #include "nyx_cmd_device_info_get_info.h"
 
 #include <string>
+#include <sstream>
 
 using namespace std;
 
-static string nameStr = "Device info";
-static string descriptionStr = "Nyx Device info device type.";
-
+static string nameStr = "DeviceInfo";
+static string descriptionStr = "Nyx 'Device Info' device type.";
 
 // Name of the device type
 string NyxCmdDeviceInfo::Name()
 {
 	return nameStr;
 }
+
+// Usage information for the device type.
+string NyxCmdDeviceInfo::Usage()
+{
+	ostringstream usage;
+	usage << "COMMAND" << endl;
+	usage << "  get [GET_ARGS]\t\tGet device information" << endl;
+	usage << "GET_ARGS" << endl;
+	usage << "  nduid\t\t\t\tReturn device NDUID" << endl;
+	usage << "  name\t\t\t\tReturn device name" << endl;
+	return usage.str();
+}
+
 
 // Human readable description of the device type.
 string NyxCmdDeviceInfo::Description()

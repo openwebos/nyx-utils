@@ -52,6 +52,14 @@ class NyxCmdSystem : public NyxCmdDeviceType
 
 	public :
 /**
+ * Get the device type specific usage.
+ *
+ * @return Usage info for the device type
+ *
+ */
+		std::string Usage(void);
+
+/**
  * Get the device type specific name.
  *
  * @return Name for the device type

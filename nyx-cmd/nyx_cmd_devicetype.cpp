@@ -53,6 +53,17 @@ string NyxCmdDeviceType::Version()
 }
 
 /*
+* Default implementation for Usage()
+*
+*/
+string NyxCmdDeviceType::Usage()
+{
+	// output empty string
+	return string("");
+}
+
+
+/*
 * Executes the command defined in command line.
 *
 * Resolve command line and use map find to find right file name.
