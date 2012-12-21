@@ -60,6 +60,8 @@ static nyx_system_shutdown_type_t argument;
 static void usage(void);
 static void printVersion();
 static char *resolveArguments(int argc, char **argv);
+static void searchLibraries(string libPath, list<string> &files);
+static void listImplementations(void);
 
 static void usage(void)
 {
@@ -75,6 +77,7 @@ static void usage(void)
 	printf("  -?, --help\t\t\tUsage guidance.\n");
 	printf("\t\t\t\tDisplay usage guidance of device type module when\n");
 	printf("\t\t\t\tDEVICE-TYPE is specified.\n");
+	printf("  -l, --list\t\t\tList installed device type modules.\n");
 	printf("DEVICE-TYPE\n");
 	printf("  E.g. System\n");
 	printf("COMMAND\n");
@@ -100,6 +103,7 @@ static char *resolveArguments(int argc, char **argv)
 		{"version", optional_argument, 0, 'v' },
 		{"id", required_argument, 0, 'i' },
 		{"help", optional_argument, 0, '?' },
+		{"list", no_argument, 0, 'l' },
 		{0, 0, 0, 0 }
 	};
 
@@ -113,7 +117,7 @@ static char *resolveArguments(int argc, char **argv)
 	{
 		int option_index = 0;
 
-		c = getopt_long(argc, argv, "vi:?", long_options, &option_index);
+		c = getopt_long(argc, argv, "lvi:?", long_options, &option_index);
 
 		if (c == -1)
 		{
@@ -130,6 +134,9 @@ static char *resolveArguments(int argc, char **argv)
 				break;
 			case '?':
 				usageInfo = true;
+				break;
+			case 'l':
+				listImplementations();
 				break;
 		}
 
@@ -248,4 +255,77 @@ int main(int argc, char **argv)
 	}
 
 	return retVal;
+}
+
+/*
+* Searches for libraries in the defined path
+*/
+static void searchLibraries(string libPath, list<string> &files)
+{
+	DIR *libDirectory;
+	struct dirent *dirp;
+	string filenameComparator("lib" NYX_CMD_MODULE_PREFIX);
+
+	if( (libDirectory  = opendir(libPath.c_str()) ) == NULL)
+	{
+		cout << "Error(" << errno << ") opening plugins directory: " << libPath << endl;
+	}
+
+	while ((dirp = readdir(libDirectory)) != NULL)
+	{
+		if ( !strcmp( dirp->d_name, "."  ) ) continue;
+		if ( !strcmp( dirp->d_name, ".." ) ) continue;
+		if ( dirp->d_name[0] == '.' ) continue;
+
+		string filename(dirp->d_name);
+		// search for libraries starting with nyx-cmd module naming convention
+		if( filename.find(filenameComparator) != -1 &&
+		    filename.substr( filename.find_last_of(".") + 1) == "so" )
+		{
+			string name(dirp->d_name);
+			files.push_back(name);
+		}
+	}
+	closedir(libDirectory);
+}
+
+/*
+* Lists all device types available
+*/
+static void listImplementations(void)
+{
+	list<string> files;
+	void *lib_handle;
+	char *error;
+
+	searchLibraries(NYX_CMD_MODULE_DIR, files);
+
+	NyxCmdDeviceType* (*initialize)(void);
+	NyxCmdDeviceType* deviceInstance = NULL;
+	string nameStr;
+
+	for(list<string>::iterator it = files.begin(); it != files.end(); ++it)
+	{
+		lib_handle = dlopen( it->c_str(), RTLD_LAZY);
+
+		if (lib_handle)
+		{
+			//Clear the error log
+			dlerror();
+
+			initialize = (NyxCmdDeviceType* (*)(void)) dlsym(lib_handle, "getNyxCmdDeviceTypeInstance" );
+
+			if (initialize != NULL && (error = dlerror()) == NULL )
+			{
+				deviceInstance = (*initialize)();
+				nameStr = deviceInstance->Name();
+				// print out the name
+				cout << nameStr << endl;
+			}
+
+			dlclose(lib_handle);
+		}
+	}
+
+	exit(EXIT_SUCCESS);
 }
