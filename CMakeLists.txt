@@ -23,7 +23,7 @@ include(webOS/webOS)
 include(FindPkgConfig)
 
 webos_modules_init(1 0 0 QUALIFIER RC4)
-webos_component(1 0 0 QUALIFIER RC1)
+webos_component(1 0 0 QUALIFIER RC2)
 
 pkg_check_modules(NYXLIB REQUIRED nyx)
 include_directories(${NYXLIB_INCLUDE_DIRS})
