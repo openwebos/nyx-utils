@@ -1,6 +1,7 @@
 // @@@LICENSE
 //
 //      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2013 LG Electronics
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,13 +27,35 @@
  *
  */
 
+#include <string>
+#include <map>
 #include <nyx/nyx_client.h>
 #include <nyx/common/nyx_device.h>
 
-/* nduid */
-#define NOVACOM_NDUID_BYTELEN   (20) ///< nduid byte array representation
-#define NOVACOM_NDUID_CHRLEN    (40) ///< nduid character array representation
-#define NOVACOM_NDUID_STRLEN    (NOVACOM_NDUID_CHRLEN + 1) ///< nduid string representation
+#include "nyx_cmd_command.h"
+#include "nyx_cmd_device_info.h"
+
+struct queryArgsTable
+{
+	static const std::map<std::string,commandUsage> initialize()
+	{
+		const std::map<std::string,commandUsage> getArgsMap;
+		getArgsMap["board_type"] = commandUsage(NYX_DEVICE_INFO_BOARD_TYPE, "Return board type");
+		getArgsMap["device_name"] = commandUsage(NYX_DEVICE_INFO_DEVICE_NAME, "Return name");
+		getArgsMap["hardware_id"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_ID, "Return hardware ID");
+		getArgsMap["hardware_revision"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_REVISION, "Return hardware revision");
+		getArgsMap["installer"] = commandUsage(NYX_DEVICE_INFO_INSTALLER, "Return installer");
+		getArgsMap["keyboard_type"] = commandUsage(NYX_DEVICE_INFO_KEYBOARD_TYPE, "Return keyboard type");
+		getArgsMap["nduid"] = commandUsage(NYX_DEVICE_INFO_NDUID, "Return NDUID");
+		getArgsMap["product_id"] = commandUsage(NYX_DEVICE_INFO_PRODUCT_ID, "Return product ID");
+		getArgsMap["radio_type"] = commandUsage(NYX_DEVICE_INFO_RADIO_TYPE, "Return radio type");
+		getArgsMap["ram_size"] = commandUsage(NYX_DEVICE_INFO_RAM_SIZE, "Return RAM size");
+		getArgsMap["serial_number"] = commandUsage(NYX_DEVICE_INFO_SERIAL_NUMBER, "Return serial number");
+		getArgsMap["storage_free"] = commandUsage(NYX_DEVICE_INFO_STORAGE_FREE, "Return free storage size");
+		getArgsMap["storage_size"] = commandUsage(NYX_DEVICE_INFO_STORAGE_SIZE, "Return storage size");
+		return getArgsMap;
+	}
+};
 
 class NyxCmdDeviceInfoGetInfo : public NyxCmdCommand
 {
@@ -47,11 +70,12 @@ class NyxCmdDeviceInfoGetInfo : public NyxCmdCommand
  *
  * @param[in]   argc - number of arguments
  * @param[in]   argv - list of arguments
+ * @param[out]  type - Type of information queried if function successful
  *
- * @return Device info type value, -1 if error
+ * @return true if 'type' was set, false if not
  *
  */
-		nyx_device_info_type_t resolveArguments(int argc, char **argv);
+		bool resolveArguments(int argc, char **argv, nyx_device_info_type_t *type);
 	public:
 /**
  * Class constructor.
@@ -81,7 +105,7 @@ class NyxCmdDeviceInfoGetInfo : public NyxCmdCommand
  * @param[in]   argc     - number of arguments
  * @param[in]   argv     - list of arguments
  *
- * @return error value from command. 0 if no error.
+ * @return -1 if error, 0 if no error.
  *
  */
 		int Execute(const char *deviceId, int argc, char** argv);

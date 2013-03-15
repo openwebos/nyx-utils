@@ -1,6 +1,7 @@
 // @@@LICENSE
 //
 //      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2013 LG Electronics
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,27 +22,30 @@
 
 #include <string>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
-
-static string nameStr = "DeviceInfo";
-static string descriptionStr = "Nyx 'Device Info' device type.";
 
 // Name of the device type
 string NyxCmdDeviceInfo::Name()
 {
-	return nameStr;
+	return string("DeviceInfo");
 }
 
 // Usage information for the device type.
 string NyxCmdDeviceInfo::Usage()
 {
+	const std::map<std::string,commandUsage> queryArgs = queryArgsTable::initialize();
 	ostringstream usage;
 	usage << "COMMAND" << endl;
-	usage << "  get [GET_ARGS]\t\tGet device information" << endl;
-	usage << "GET_ARGS" << endl;
-	usage << "  nduid\t\t\t\tReturn device NDUID" << endl;
-	usage << "  name\t\t\t\tReturn device name" << endl;
+	usage << left << "  " << setw(30) << "query QUERY" << setw(30) << "Query device information" << endl;
+	usage << "QUERY" << endl;
+
+	for(std::map<string, commandUsage>::const_iterator itr = queryArgs.begin(); itr != queryArgs.end(); ++itr)
+	{
+		usage << left << "  " << setw(30) <<  itr->first << setw(30) << itr->second.commandStr << endl;
+	}
+
 	return usage.str();
 }
 
@@ -49,7 +53,7 @@ string NyxCmdDeviceInfo::Usage()
 // Human readable description of the device type.
 string NyxCmdDeviceInfo::Description()
 {
-	return descriptionStr;
+	return string("Nyx 'Device Info' device type.");
 }
 
 /*
@@ -58,7 +62,7 @@ string NyxCmdDeviceInfo::Description()
 */
 NyxCmdCommand* NyxCmdDeviceInfo::getCommand(string commandName)
 {
-	if(commandName == "get")
+	if(commandName == "query")
 	{
 		return new NyxCmdDeviceInfoGetInfo();
 	}

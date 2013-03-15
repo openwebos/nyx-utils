@@ -1,6 +1,7 @@
 // @@@LICENSE
 //
 //      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2013 LG Electronics
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,19 +17,17 @@
 //
 // LICENSE@@@
 
-#include "nyx_cmd_command.h"
+
 #include "nyx_cmd_device_info_get_info.h"
 
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <cstring>
+#include <map>
 #include <getopt.h>
 
 using namespace std;
-
-static string nameStr = "device_info_get_info";
-static string descriptionStr =  "Returns device info.";
 
 /*
 * Class constructor
@@ -43,7 +42,7 @@ NyxCmdDeviceInfoGetInfo::NyxCmdDeviceInfoGetInfo()
 */
 string NyxCmdDeviceInfoGetInfo::Description()
 {
-	return descriptionStr;
+	return string("Returns device info.");
 }
 
 /*
@@ -51,7 +50,7 @@ string NyxCmdDeviceInfoGetInfo::Description()
 */
 string NyxCmdDeviceInfoGetInfo::Name()
 {
-	return nameStr;
+	return string("query");
 }
 
 /*
@@ -62,32 +61,37 @@ int NyxCmdDeviceInfoGetInfo::Execute(const char *deviceId, int argc, char **argv
 {
 	nyx_device_handle_t device = NULL;
 	nyx_device_info_type_t infoType;
-	nyx_error_t error = NYX_ERROR_NONE;
+	nyx_error_t error = NYX_ERROR_GENERIC;
 
-	infoType = resolveArguments(argc, argv);
-
-	if(infoType != -1)
+	if(resolveArguments(argc, argv, &infoType))
 	{
 		error = nyx_init();
 
-		if(error == NYX_ERROR_NONE)
+		if(NYX_ERROR_NONE == error)
 		{
 			error = nyx_device_open(NYX_DEVICE_DEVICE_INFO, deviceId, &device);
 
-			if(device != NULL)
+			if(NULL != device)
 			{
-				// use NDUID_STRLEN as max length for any returned string
-				char retVal[NOVACOM_NDUID_STRLEN];
+				char retVal[100];
 
-				if(retVal)
+				error = nyx_device_info_get_info(device, infoType,
+				                                 retVal, sizeof(retVal));
+
+				switch(error)
 				{
-					error = nyx_device_info_get_info(device, infoType,
-					                                 retVal, NOVACOM_NDUID_STRLEN);
-
-					if(NYX_ERROR_NONE == error )
-					{
+					case NYX_ERROR_NONE:
 						cout << retVal << endl;
-					}
+						break;
+					case NYX_ERROR_NOT_IMPLEMENTED:
+						cerr << "Error: Query not implemented" << endl;
+						break;
+					case NYX_ERROR_DEVICE_UNAVAILABLE:
+						cerr << "Error: Device or value not available" << endl;
+						break;
+					default:
+						cerr << "Error: Error " << error << " in executing query" << endl;
+						break;
 				}
 
 				nyx_device_close(device);
@@ -102,48 +106,42 @@ int NyxCmdDeviceInfoGetInfo::Execute(const char *deviceId, int argc, char **argv
 
 	}
 
-	if(error == NYX_ERROR_NONE)
-	{
-		return 0;
-	}
-	else
-	{
-		return -1;
-	}
+	return (NYX_ERROR_NONE == error)? 0 : -1;
 }
 
 /*
 * Parses the command line arguments and resolves them to proper variables.
+* If return value is 'false', type will be unchanged.
 */
-nyx_device_info_type_t NyxCmdDeviceInfoGetInfo::resolveArguments(int argc, char **argv)
+bool NyxCmdDeviceInfoGetInfo::resolveArguments(int argc, char **argv, nyx_device_info_type_t *type)
 {
-	nyx_device_info_type_t retVal = (nyx_device_info_type_t) -1;
+	bool retVal = false;
+	const std::map<std::string,commandUsage> queryArgs = queryArgsTable::initialize();
 
 	if (optind < argc)
 	{
 		//Arguments
 		char *argumentStr = argv[optind++];
 
-		if( strcmp(argumentStr, "nduid") == 0)
+		// get the iterator
+		map<string, commandUsage>::const_iterator iter = queryArgs.find(string(argumentStr));
+
+		if (queryArgs.end() != iter)
 		{
-			retVal = NYX_DEVICE_INFO_NDUID;
-		}
-		else if( strcmp(argumentStr, "name") == 0 )
-		{
-			retVal = NYX_DEVICE_INFO_DEVICE_NAME;
+			*type = iter->second.commandEnum;
+			retVal = true;
 		}
 		else
 		{
 			cerr << "Unknown argument" << endl;
-			retVal = (nyx_device_info_type_t) -1;
+			retVal =  false;
 		}
 	}
 	else
 	{
 		cerr << "Not enough arguments" << endl;
-		retVal = (nyx_device_info_type_t) -1;
+		retVal =  false;
 	}
-
 
 	return retVal;
 }
