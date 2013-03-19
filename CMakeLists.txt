@@ -55,3 +55,5 @@ add_definitions(-DNYX_CMD_VERSION_INFO="${WEBOS_COMPONENT_VERSION}")
 
 add_subdirectory(nyx-cmd)
 add_subdirectory(nyx-cmd-modules)
+
+webos_build_configured_tree(${CMAKE_SOURCE_DIR}/files/launch UPSTARTCONFDIR)
