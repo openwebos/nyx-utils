@@ -204,6 +204,7 @@ int main(int argc, char **argv)
 					if (versionQuery)
 					{
 						cout << devTypeInstance->Version() << endl;
+						retVal = 0;
 					}
 					else if(usageInfo)
 					{
@@ -215,15 +216,13 @@ int main(int argc, char **argv)
 						cout << "\t\t\t\tUnless specified, uses 'Main'" << endl;
 						cout << "  -?, --help\t\t\tUsage guidance" << endl;
 						cout << devTypeInstance->Usage() << endl;
+
+						retVal = 0;
 					}
 					else
 					{
-						devTypeInstance->executeCommand(deviceId, argc, argv);
+						retVal = devTypeInstance->executeCommand(deviceId, argc, argv);
 					}
-
-					// either version query or command, it was still successful
-					retVal = 0;
-
 				} catch (...)
 				{
 					cout << "Error executing command." << endl;

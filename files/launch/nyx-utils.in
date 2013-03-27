@@ -39,6 +39,8 @@ script
     {
         echo "{" > $2
 
+        # enable non-zero exit codes for nyx-cmd
+        set +e
         for i in `print_query_list $1`; do
             val=`nyx-cmd $1 query $i`
             if [ $? = 0 ]; then
@@ -46,6 +48,8 @@ script
             fi
         done
 
+        #disable non-zero exit codes
+        set -e
         # remote last comma to make valid json
         sed -i '$ s/,$//' $2
 
