@@ -68,7 +68,7 @@ static void usage(void)
 	printf("usage:\n");
 	printf("nyx-cmd [OPTION] [DEVICE-TYPE [COMMAND [ARGS]...]]\n");
 	printf("OPTION\n");
-	printf("  v, --version\t\t\tDisplay version of nyx-cmd when no other\n");
+	printf("  -v, --version\t\t\tDisplay version of nyx-cmd when no other\n");
 	printf("\t\t\t\targuments are present.\n");
 	printf("\t\t\t\tDisplay version of device type module when DEVICE-TYPE\n");
 	printf("\t\t\t\tis specified.\n");

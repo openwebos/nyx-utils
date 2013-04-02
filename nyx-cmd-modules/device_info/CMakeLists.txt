@@ -1,6 +1,7 @@
 # @@@LICENSE
 #
 #      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+#      Copyright (c) 2013 LG Electronics
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +18,6 @@
 # LICENSE@@@
 
 set(moduleName ${NYX_CMD_MODULE_PREFIX}DeviceInfo)
-add_library(${moduleName} SHARED nyx_cmd_device_info.cpp nyx_cmd_device_info_get_info.cpp)
+add_library(${moduleName} SHARED nyx_cmd_device_info.cpp nyx_cmd_device_info_query.cpp)
 target_link_libraries(${moduleName} ${NYXLIB_LDFLAGS})
 nyx_cmd_install_library(${moduleName})

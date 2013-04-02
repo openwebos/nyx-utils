@@ -18,7 +18,7 @@
 // LICENSE@@@
 
 
-#include "nyx_cmd_device_info_get_info.h"
+#include "nyx_cmd_device_info_query.h"
 
 #include <iostream>
 #include <string>
@@ -33,14 +33,14 @@ using namespace std;
 * Class constructor
 */
 
-NyxCmdDeviceInfoGetInfo::NyxCmdDeviceInfoGetInfo()
+NyxCmdDeviceInfoQuery::NyxCmdDeviceInfoQuery()
 {
 }
 
 /*
 * Command usage description as a string.
 */
-string NyxCmdDeviceInfoGetInfo::Description()
+string NyxCmdDeviceInfoQuery::Description()
 {
 	return string("Returns device info.");
 }
@@ -48,7 +48,7 @@ string NyxCmdDeviceInfoGetInfo::Description()
 /*
 * Command name as it will be written on the command line.
 */
-string NyxCmdDeviceInfoGetInfo::Name()
+string NyxCmdDeviceInfoQuery::Name()
 {
 	return string("query");
 }
@@ -57,7 +57,7 @@ string NyxCmdDeviceInfoGetInfo::Name()
 * Execute command.
 * Resolves command parameters from the command line arguments.
 */
-int NyxCmdDeviceInfoGetInfo::Execute(const char *deviceId, int argc, char **argv)
+int NyxCmdDeviceInfoQuery::Execute(const char *deviceId, int argc, char **argv)
 {
 	nyx_device_handle_t device = NULL;
 	nyx_device_info_type_t infoType;
@@ -73,10 +73,9 @@ int NyxCmdDeviceInfoGetInfo::Execute(const char *deviceId, int argc, char **argv
 
 			if(NULL != device)
 			{
-				char retVal[100];
+				const char *retVal = NULL;
 
-				error = nyx_device_info_get_info(device, infoType,
-				                                 retVal, sizeof(retVal));
+				error = nyx_device_info_query(device, infoType, &retVal);
 
 				switch(error)
 				{
@@ -113,7 +112,7 @@ int NyxCmdDeviceInfoGetInfo::Execute(const char *deviceId, int argc, char **argv
 * Parses the command line arguments and resolves them to proper variables.
 * If return value is 'false', type will be unchanged.
 */
-bool NyxCmdDeviceInfoGetInfo::resolveArguments(int argc, char **argv, nyx_device_info_type_t *type)
+bool NyxCmdDeviceInfoQuery::resolveArguments(int argc, char **argv, nyx_device_info_type_t *type)
 {
 	bool retVal = false;
 	const std::map<std::string,commandUsage> queryArgs = queryArgsTable::initialize();

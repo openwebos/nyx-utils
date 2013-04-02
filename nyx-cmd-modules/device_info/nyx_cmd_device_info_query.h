@@ -17,13 +17,13 @@
 //
 // LICENSE@@@
 
-#ifndef __NYXCMDDEVICEINFOGETINFO_H__
-#define __NYXCMDDEVICEINFOGETINFO_H__
+#ifndef __NYXCMDDEVICEINFOQUERY_H__
+#define __NYXCMDDEVICEINFOQUERY_H__
 
 /**
- * @file nyx_cmd_device_info_get_info.h 
+ * @file nyx_cmd_device_info_query.h
  *
- * @brief Implementation class for nyx-cmd Device info device type get info command.
+ * @brief Implementation class for nyx-cmd Device info device type query command.
  *
  */
 
@@ -46,6 +46,7 @@ struct queryArgsTable
 		getArgsMap["hardware_revision"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_REVISION, "Return hardware revision");
 		getArgsMap["installer"] = commandUsage(NYX_DEVICE_INFO_INSTALLER, "Return installer");
 		getArgsMap["keyboard_type"] = commandUsage(NYX_DEVICE_INFO_KEYBOARD_TYPE, "Return keyboard type");
+		getArgsMap["modem_present"] = commandUsage(NYX_DEVICE_INFO_MODEM_PRESENT, "Return modem availability");
 		getArgsMap["nduid"] = commandUsage(NYX_DEVICE_INFO_NDUID, "Return NDUID");
 		getArgsMap["product_id"] = commandUsage(NYX_DEVICE_INFO_PRODUCT_ID, "Return product ID");
 		getArgsMap["radio_type"] = commandUsage(NYX_DEVICE_INFO_RADIO_TYPE, "Return radio type");
@@ -57,10 +58,10 @@ struct queryArgsTable
 	}
 };
 
-class NyxCmdDeviceInfoGetInfo : public NyxCmdCommand
+class NyxCmdDeviceInfoQuery : public NyxCmdCommand
 {
 /**
-* @defgroup nyx_cmd_device_info_get_info nyx-cmd Device info device type get info command
+* @defgroup nyx_cmd_device_info_query nyx-cmd Device info device type query command
 * @ingroup nyx_cmd_device_info_module
 * @{
 */
@@ -81,7 +82,7 @@ class NyxCmdDeviceInfoGetInfo : public NyxCmdCommand
  * Class constructor.
  *
  */
-		NyxCmdDeviceInfoGetInfo(void);
+		NyxCmdDeviceInfoQuery(void);
 /**
  * Get the description of the command functionality.
  *
@@ -112,4 +113,4 @@ class NyxCmdDeviceInfoGetInfo : public NyxCmdCommand
 /** @} */
 };
 
-#endif // __NYXCMDDEVICEINFOGETINFO_H__
+#endif // __NYXCMDDEVICEINFOQUERY_H__

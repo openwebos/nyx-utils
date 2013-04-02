@@ -18,7 +18,7 @@
 // LICENSE@@@
 
 #include "nyx_cmd_device_info.h"
-#include "nyx_cmd_device_info_get_info.h"
+#include "nyx_cmd_device_info_query.h"
 
 #include <string>
 #include <sstream>
@@ -64,7 +64,7 @@ NyxCmdCommand* NyxCmdDeviceInfo::getCommand(string commandName)
 {
 	if(commandName == "query")
 	{
-		return new NyxCmdDeviceInfoGetInfo();
+		return new NyxCmdDeviceInfoQuery();
 	}
 
 	return NULL;
