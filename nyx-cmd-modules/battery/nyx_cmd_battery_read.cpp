@@ -1,6 +1,7 @@
 // @@@LICENSE
 //
 //      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2013 LG Electronics
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -112,7 +113,7 @@ int NyxCmdBatteryRead::Execute(const char *deviceId, int argc, char **argv)
 				}
 				else
 				{
-					cerr << "Unknown argument" << endl;
+					cerr << "Error: Unknown argument" << endl;
 					// force return to be -1
 					error = NYX_ERROR_INVALID_VALUE;
 				}
@@ -121,21 +122,14 @@ int NyxCmdBatteryRead::Execute(const char *deviceId, int argc, char **argv)
 		}
 		else
 		{
-			cerr << "Error initializing Nyx" << endl;
+			cerr << "Error: Error initializing Nyx" << endl;
 		}
 
 		nyx_deinit();
 
 	}
 
-	if(error == NYX_ERROR_NONE)
-	{
-		return 0;
-	}
-	else
-	{
-		return -1;
-	}
+	return (NYX_ERROR_NONE == error)? 0 : -1;
 }
 
 /*
@@ -152,7 +146,7 @@ string NyxCmdBatteryRead::resolveArguments(int argc, char **argv)
 	}
 	else
 	{
-		cerr << "Not enough arguments" << endl;
+		cerr << "Error: Not enough arguments" << endl;
 		// return empty string
 	}
 

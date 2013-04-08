@@ -99,7 +99,7 @@ int NyxCmdOSInfoQuery::Execute(const char *deviceId, int argc, char **argv)
 		}
 		else
 		{
-			cerr << "Error initializing Nyx" << endl;
+			cerr << "Error: Error initializing Nyx" << endl;
 		}
 
 		nyx_deinit();
@@ -133,13 +133,13 @@ bool NyxCmdOSInfoQuery::resolveArguments(int argc, char **argv, nyx_os_info_quer
 		}
 		else
 		{
-			cerr << "Unknown argument" << endl;
+			cerr << "Error: Unknown argument" << endl;
 			retVal = false;
 		}
 	}
 	else
 	{
-		cerr << "Not enough arguments" << endl;
+		cerr << "Error: Not enough arguments" << endl;
 		retVal = false;
 	}
 

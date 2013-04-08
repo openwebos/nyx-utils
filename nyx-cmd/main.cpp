@@ -1,6 +1,7 @@
 // @@@LICENSE
 //
 //      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2013 LG Electronics
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -225,7 +226,7 @@ int main(int argc, char **argv)
 					}
 				} catch (...)
 				{
-					cout << "Error executing command." << endl;
+					cout << "Error: Error executing command." << endl;
 				}
 
 				if(devTypeInstance)
@@ -240,7 +241,7 @@ int main(int argc, char **argv)
 		}
 		else
 		{
-			cerr << "Error opening the plugin" << endl;
+			cerr << "Error: Error opening the plugin" << endl;
 		}
 	}
 	else
@@ -250,7 +251,7 @@ int main(int argc, char **argv)
 		else if(usageInfo)
 			usage();
 		else
-			cout << "No available device types" << endl;
+			cout << "Error: No available device types" << endl;
 	}
 
 	return retVal;
@@ -267,7 +268,7 @@ static void searchLibraries(string libPath, list<string> &files)
 
 	if( (libDirectory  = opendir(libPath.c_str()) ) == NULL)
 	{
-		cout << "Error(" << errno << ") opening plugins directory: " << libPath << endl;
+		cout << "Error: Error(" << errno << ") opening plugins directory: " << libPath << endl;
 	}
 
 	while ((dirp = readdir(libDirectory)) != NULL)

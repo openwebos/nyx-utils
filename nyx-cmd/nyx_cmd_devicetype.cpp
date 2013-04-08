@@ -1,6 +1,7 @@
 // @@@LICENSE
 //
 //      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2013 LG Electronics
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -85,7 +86,7 @@ int NyxCmdDeviceType::executeCommand(const char *deviceId, int argc, char **argv
 		}
 		else
 		{
-			cout << "Unknown command" << endl;
+			cout << "Error: Unknown command" << endl;
 		}
 	}
 	else
