@@ -254,7 +254,7 @@ int main(int argc, char **argv)
 			cout << "Error: No available device types" << endl;
 	}
 
-	return retVal;
+	return (0 == retVal)? 0 : EXIT_FAILURE;
 }
 
 /*
