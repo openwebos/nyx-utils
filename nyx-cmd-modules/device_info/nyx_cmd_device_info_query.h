@@ -41,6 +41,7 @@ struct queryArgsTable
 	{
 		const std::map<std::string,commandUsage> getArgsMap;
 		getArgsMap["board_type"] = commandUsage(NYX_DEVICE_INFO_BOARD_TYPE, "Return board type");
+		getArgsMap["bt_addr"] = commandUsage(NYX_DEVICE_INFO_BT_ADDR, "Return BT address");
 		getArgsMap["device_name"] = commandUsage(NYX_DEVICE_INFO_DEVICE_NAME, "Return name");
 		getArgsMap["hardware_id"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_ID, "Return hardware ID");
 		getArgsMap["hardware_revision"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_REVISION, "Return hardware revision");
@@ -54,6 +55,7 @@ struct queryArgsTable
 		getArgsMap["serial_number"] = commandUsage(NYX_DEVICE_INFO_SERIAL_NUMBER, "Return serial number");
 		getArgsMap["storage_free"] = commandUsage(NYX_DEVICE_INFO_STORAGE_FREE, "Return free storage size");
 		getArgsMap["storage_size"] = commandUsage(NYX_DEVICE_INFO_STORAGE_SIZE, "Return storage size");
+		getArgsMap["wifi_addr"] = commandUsage(NYX_DEVICE_INFO_WIFI_ADDR, "Return WiFi MAC address");
 		return getArgsMap;
 	}
 };
