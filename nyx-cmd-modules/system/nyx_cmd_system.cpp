@@ -1,6 +1,7 @@
 // @@@LICENSE
 //
 //      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2013 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,26 +19,24 @@
 
 #include "nyx_cmd_system.h"
 #include "nyx_cmd_system_reboot.h"
+#include "nyx_cmd_system_shutdown.h"
 
 #include <string>
 #include <sstream>
+#include <iomanip>
 
 using namespace std;
-
-static string nameStr = "System";
-static string descriptionStr = "Nyx 'System' device type.";
-
 
 // Name of the device type
 string NyxCmdSystem::Name()
 {
-	return nameStr;
+	return string("System");
 }
 
 // Human readable description of the device type.
 string NyxCmdSystem::Description()
 {
-	return descriptionStr;
+	return string("Nyx 'System' device type.");
 }
 
 //! [Usage info]
@@ -46,13 +45,25 @@ string NyxCmdSystem::Usage()
 {
 	ostringstream usage;
 	usage << "COMMAND" << endl;
-	usage << "  system_reboot [REBOOT_ARGS]\tReboots the device" << endl;
-	usage << "\t\t\t\tIf [REBOOT_ARGS] is not set, defaults to" << endl;
-	usage << "\t\t\t\t'NYX_SYSTEM_NORMAL_SHUTDOWN'" << endl;
-	usage << "REBOOT_ARGS" << endl;
-	usage << "  NYX_SYSTEM_NORMAL_SHUTDOWN\tNormal shutdown" << endl;
-	usage << "  NYX_SYSTEM_EMERG_SHUTDOWN\tEmergency shutdown" << endl;
-	usage << "  NYX_SYSTEM_TEST_SHUTDOWN\tTest shutdown" << endl;
+	usage << left << "  " << setw(30) << "system_reboot [ARGS]" << setw(30)
+	      << "Reboots the device" << endl;
+	usage << setw(32) << "  " << setw(50) << "If [ARGS] is not set, defaults to"
+	      << endl;
+	usage << setw(32) << "  " << setw(30) << "'NYX_SYSTEM_NORMAL_SHUTDOWN'"
+	      << endl;
+	usage << "  " << setw(30) << "system_shutdown [ARGS]" << setw(30)
+	      << "Shuts down the device" << endl;
+	usage << setw(32) << "  " << setw(50) << "If [ARGS] is not set, defaults to"
+	      << endl;
+	usage << setw(32) << "  " << setw(30) << "'NYX_SYSTEM_NORMAL_SHUTDOWN'"
+	      << endl;
+	usage << "ARGS" << endl;
+	usage << "  " << setw(30) << "NYX_SYSTEM_NORMAL_SHUTDOWN"  << setw(30)
+	      << "Normal shutdown" << endl;
+	usage << "  " << setw(30) << "NYX_SYSTEM_EMERG_SHUTDOWN"  << setw(30)
+	      << "Emergency shutdown" << endl;
+	usage << "  " << setw(30) << "NYX_SYSTEM_TEST_SHUTDOWN"  << setw(30)
+	      << "Test shutdown" << endl;
 	return usage.str();
 }
 //! [Usage info]
@@ -66,6 +77,10 @@ NyxCmdCommand* NyxCmdSystem::getCommand(string commandName)
 	if(commandName == "system_reboot")
 	{
 		return new NyxCmdSystemReboot();
+	}
+	else if(commandName == "system_shutdown")
+	{
+		return new NyxCmdSystemShutdown();
 	}
 
 	return NULL;

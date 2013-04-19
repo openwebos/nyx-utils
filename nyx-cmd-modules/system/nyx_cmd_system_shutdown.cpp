@@ -1,6 +1,5 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
 //      Copyright (c) 2013 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +17,7 @@
 // LICENSE@@@
 
 #include "nyx_cmd_command.h"
-#include "nyx_cmd_system_reboot.h"
+#include "nyx_cmd_system_shutdown.h"
 
 #include <iostream>
 #include <string>
@@ -28,38 +27,35 @@
 
 using namespace std;
 
-static string nameStr = "system_reboot";
-static string descriptionStr =  "Reboots the system.\nTakes reboot reason as an argument.";
-
 /*
 * Class constructor
 */
 
-NyxCmdSystemReboot::NyxCmdSystemReboot()
+NyxCmdSystemShutdown::NyxCmdSystemShutdown()
 {
 }
 
 /*
 * Command usage description as a string.
 */
-string NyxCmdSystemReboot::Description()
+string NyxCmdSystemShutdown::Description()
 {
-	return descriptionStr;
+	return string("Executes system shutdown.\nTakes shutdown reason as an argument.");
 }
 
 /*
 * Command name as it will be written on the command line.
 */
-string NyxCmdSystemReboot::Name()
+string NyxCmdSystemShutdown::Name()
 {
-	return nameStr;
+	return string("system_shutdown");
 }
 
 /*
 * Execute command.
 * Resolves command parameters from the command line arguments.
 */
-int NyxCmdSystemReboot::Execute(const char *deviceId, int argc, char **argv)
+int NyxCmdSystemShutdown::Execute(const char *deviceId, int argc, char **argv)
 {
 	nyx_device_handle_t device = NULL;
 	nyx_system_shutdown_type_t shutdownReason;
@@ -77,11 +73,11 @@ int NyxCmdSystemReboot::Execute(const char *deviceId, int argc, char **argv)
 
 			if(device != NULL)
 			{
-				error = nyx_system_reboot(device, shutdownReason, NULL);
+				error = nyx_system_shutdown(device, shutdownReason, NULL);
 
 				if(error != NYX_ERROR_NONE)
 				{
-					cerr << "Error: Error in rebooting the device." << endl;
+					cerr << "Error: Error in shutting down the device." << endl;
 				}
 				nyx_device_close(device);
 			}
@@ -100,7 +96,7 @@ int NyxCmdSystemReboot::Execute(const char *deviceId, int argc, char **argv)
 /*
 * Parses the command line arguments and resolves them to proper variables.
 */
-nyx_system_shutdown_type_t NyxCmdSystemReboot::resolveArguments(int argc, char **argv)
+nyx_system_shutdown_type_t NyxCmdSystemShutdown::resolveArguments(int argc, char **argv)
 {
 	// defaults to 'NYX_SYSTEM_NORMAL_SHUTDOWN' for cases there isn't any parameters
 	// Unknown arguments are still considered invalid.

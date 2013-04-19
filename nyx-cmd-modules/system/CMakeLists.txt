@@ -1,6 +1,7 @@
 # @@@LICENSE
 #
 #      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+#      Copyright (c) 2013 LG Electronics, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +18,8 @@
 # LICENSE@@@
 
 set(moduleName ${NYX_CMD_MODULE_PREFIX}System)
-add_library(${moduleName} SHARED nyx_cmd_system.cpp nyx_cmd_system_reboot.cpp)
+add_library(${moduleName} SHARED nyx_cmd_system.cpp
+                                 nyx_cmd_system_reboot.cpp
+                                 nyx_cmd_system_shutdown.cpp)
 target_link_libraries(${moduleName} ${NYXLIB_LDFLAGS})
 nyx_cmd_install_library(${moduleName})
