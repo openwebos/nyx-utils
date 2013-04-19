@@ -45,7 +45,7 @@ struct queryArgsTable
 		queryArgsMap["core_os_release"] = commandUsage(NYX_OS_INFO_CORE_OS_RELEASE, "Return Core OS release info");
 		queryArgsMap["core_os_release_codename"] = commandUsage(NYX_OS_INFO_CORE_OS_RELEASE_CODENAME, "Return Core OS release codename");
 		queryArgsMap["webos_api_version"] = commandUsage(NYX_OS_INFO_WEBOS_API_VERSION, "Return webOS API version");
-		queryArgsMap["webos_build"] = commandUsage(NYX_OS_INFO_WEBOS_BUILD, "Return webOS build info");
+		queryArgsMap["webos_build_id"] = commandUsage(NYX_OS_INFO_WEBOS_BUILD_ID, "Return webOS build ID");
 		queryArgsMap["webos_imagename"] = commandUsage(NYX_OS_INFO_WEBOS_IMAGENAME, "Return webOS imagename");
 		queryArgsMap["webos_name"] = commandUsage(NYX_OS_INFO_WEBOS_NAME, "Return webOS name");
 		queryArgsMap["webos_prerelease"] = commandUsage(NYX_OS_INFO_WEBOS_PRERELEASE, "Return webOS prerelease info");
