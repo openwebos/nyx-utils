@@ -31,50 +31,29 @@
 #include <nyx/nyx_client.h>
 #include <nyx/common/nyx_device.h>
 
-#include "nyx_cmd_command.h"
+#include "nyx_cmd_query_command.h"
 #include "nyx_cmd_os_info.h"
 
-struct queryArgsTable
-{
-	static const std::map<std::string,commandUsage> initialize()
-	{
-		const std::map<std::string,commandUsage> queryArgsMap;
-		queryArgsMap["core_os_kernel_config"] = commandUsage(NYX_OS_INFO_CORE_OS_KERNEL_CONFIG, "Return webOS kernel config");
-		queryArgsMap["core_os_kernel_version"] = commandUsage(NYX_OS_INFO_CORE_OS_KERNEL_VERSION, "Return webOS kernel version info");
-		queryArgsMap["core_os_name"] = commandUsage(NYX_OS_INFO_CORE_OS_NAME, "Return Core OS name");
-		queryArgsMap["core_os_release"] = commandUsage(NYX_OS_INFO_CORE_OS_RELEASE, "Return Core OS release info");
-		queryArgsMap["core_os_release_codename"] = commandUsage(NYX_OS_INFO_CORE_OS_RELEASE_CODENAME, "Return Core OS release codename");
-		queryArgsMap["webos_api_version"] = commandUsage(NYX_OS_INFO_WEBOS_API_VERSION, "Return webOS API version");
-		queryArgsMap["webos_build_id"] = commandUsage(NYX_OS_INFO_WEBOS_BUILD_ID, "Return webOS build ID");
-		queryArgsMap["webos_imagename"] = commandUsage(NYX_OS_INFO_WEBOS_IMAGENAME, "Return webOS imagename");
-		queryArgsMap["webos_name"] = commandUsage(NYX_OS_INFO_WEBOS_NAME, "Return webOS name");
-		queryArgsMap["webos_prerelease"] = commandUsage(NYX_OS_INFO_WEBOS_PRERELEASE, "Return webOS prerelease info");
-		queryArgsMap["webos_release"] = commandUsage(NYX_OS_INFO_WEBOS_RELEASE, "Return webOS release info");
-		queryArgsMap["webos_release_codename"] = commandUsage(NYX_OS_INFO_WEBOS_RELEASE_CODENAME, "Return webOS release codename");
-		return queryArgsMap;
-	}
-};
-
-
-class NyxCmdOSInfoQuery : public NyxCmdCommand
+class NyxCmdOSInfoQuery : public NyxCmdQueryCommand
 {
 /**
 * @defgroup nyx_cmd_os_info_query nyx-cmd OS info device type query command
 * @ingroup nyx_cmd_os_info_module
 * @{
 */
-	private:
+	protected:
 /**
- * Resolve arguments given to Execute function.
+ * Executes a single query.
  *
- * @param[in]   argc - number of arguments
- * @param[in]   argv - list of arguments
- * @param[out]  query - OS info query value
+ * @param[in]	device   - Nyx device handle
+ * @param[in]	cmd      - command to be queried
+ * @param[out]	retVal   - Returned string from query
  *
- * @return true if known argument found
+ * @return error from Nyx calls. NYX_ERROR_NONE if no error
  *
  */
-		bool resolveArguments(int argc, char **argv, nyx_os_info_query_t * query);
+		nyx_error_t nyxQuery(nyx_device_handle_t device, commandUsage::command_enum_t cmd, const char** retVal);
+
 	public:
 /**
  * Class constructor.
@@ -98,16 +77,13 @@ class NyxCmdOSInfoQuery : public NyxCmdCommand
 		std::string Name();
 
 /**
- * Execute the command. Full argument list is expected.
+ * Initializes command map for the command.
  *
- * @param[in]   deviceId - device identifier
- * @param[in]   argc     - number of arguments
- * @param[in]   argv     - list of arguments
- *
- * @return -1 if error.
+ * @param[in]	devType		- Nyx device type
+ * @param[out]	commandMap	- Initialized commandMap
  *
  */
-		int Execute(const char *deviceId, int argc, char** argv);
+		void initCommandMap(nyx_device_type_t &devType, std::map<std::string,commandUsage> &commandMap);
 /** @} */
 };
 

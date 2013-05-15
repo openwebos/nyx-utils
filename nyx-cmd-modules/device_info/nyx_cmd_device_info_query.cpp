@@ -53,94 +53,29 @@ string NyxCmdDeviceInfoQuery::Name()
 	return string("query");
 }
 
-/*
-* Execute command.
-* Resolves command parameters from the command line arguments.
-*/
-int NyxCmdDeviceInfoQuery::Execute(const char *deviceId, int argc, char **argv)
+void NyxCmdDeviceInfoQuery::initCommandMap(nyx_device_type_t &devType,
+                                           std::map<std::string,commandUsage> &commandMap)
 {
-	nyx_device_handle_t device = NULL;
-	nyx_device_info_type_t infoType;
-	nyx_error_t error = NYX_ERROR_GENERIC;
-
-	if(resolveArguments(argc, argv, &infoType))
-	{
-		error = nyx_init();
-
-		if(NYX_ERROR_NONE == error)
-		{
-			error = nyx_device_open(NYX_DEVICE_DEVICE_INFO, deviceId, &device);
-
-			if(NULL != device)
-			{
-				const char *retVal = NULL;
-
-				error = nyx_device_info_query(device, infoType, &retVal);
-
-				switch(error)
-				{
-					case NYX_ERROR_NONE:
-						cout << retVal << endl;
-						break;
-					case NYX_ERROR_NOT_IMPLEMENTED:
-						cerr << "Error: Query not implemented" << endl;
-						break;
-					case NYX_ERROR_DEVICE_UNAVAILABLE:
-						cerr << "Error: Device or value not available" << endl;
-						break;
-					default:
-						cerr << "Error: Error " << error << " in executing query" << endl;
-						break;
-				}
-
-				nyx_device_close(device);
-			}
-		}
-		else
-		{
-			cerr << "Error: Error initializing Nyx" << endl;
-		}
-
-		nyx_deinit();
-
-	}
-
-	return (NYX_ERROR_NONE == error)? 0 : -1;
+	devType = NYX_DEVICE_DEVICE_INFO;
+	commandMap["board_type"] = commandUsage(NYX_DEVICE_INFO_BOARD_TYPE, "Return board type");
+	commandMap["bt_addr"] = commandUsage(NYX_DEVICE_INFO_BT_ADDR, "Return Bluetooth address");
+	commandMap["device_name"] = commandUsage(NYX_DEVICE_INFO_DEVICE_NAME, "Return device name");
+	commandMap["hardware_id"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_ID, "Return hardware ID");
+	commandMap["hardware_revision"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_REVISION, "Return hardware revision");
+	commandMap["installer"] = commandUsage(NYX_DEVICE_INFO_INSTALLER, "Return installer");
+	commandMap["keyboard_type"] = commandUsage(NYX_DEVICE_INFO_KEYBOARD_TYPE, "Return keyboard type");
+	commandMap["modem_present"] = commandUsage(NYX_DEVICE_INFO_MODEM_PRESENT, "Return modem availability");
+	commandMap["nduid"] = commandUsage(NYX_DEVICE_INFO_NDUID, "Return NDUID");
+	commandMap["product_id"] = commandUsage(NYX_DEVICE_INFO_PRODUCT_ID, "Return product ID");
+	commandMap["radio_type"] = commandUsage(NYX_DEVICE_INFO_RADIO_TYPE, "Return radio type");
+	commandMap["ram_size"] = commandUsage(NYX_DEVICE_INFO_RAM_SIZE, "Return RAM size");
+	commandMap["serial_number"] = commandUsage(NYX_DEVICE_INFO_SERIAL_NUMBER, "Return serial number");
+	commandMap["storage_free"] = commandUsage(NYX_DEVICE_INFO_STORAGE_FREE, "Return free storage size");
+	commandMap["storage_size"] = commandUsage(NYX_DEVICE_INFO_STORAGE_SIZE, "Return storage size");
+	commandMap["wifi_addr"] = commandUsage(NYX_DEVICE_INFO_WIFI_ADDR, "Return WiFi MAC address");
 }
 
-/*
-* Parses the command line arguments and resolves them to proper variables.
-* If return value is 'false', type will be unchanged.
-*/
-bool NyxCmdDeviceInfoQuery::resolveArguments(int argc, char **argv, nyx_device_info_type_t *type)
+nyx_error_t NyxCmdDeviceInfoQuery::nyxQuery(nyx_device_handle_t device, commandUsage::command_enum_t cmd, const char** retVal)
 {
-	bool retVal = false;
-	const std::map<std::string,commandUsage> queryArgs = queryArgsTable::initialize();
-
-	if (optind < argc)
-	{
-		//Arguments
-		char *argumentStr = argv[optind++];
-
-		// get the iterator
-		map<string, commandUsage>::const_iterator iter = queryArgs.find(string(argumentStr));
-
-		if (queryArgs.end() != iter)
-		{
-			*type = iter->second.commandEnum;
-			retVal = true;
-		}
-		else
-		{
-			cerr << "Error: Unknown argument" << endl;
-			retVal =  false;
-		}
-	}
-	else
-	{
-		cerr << "Error: Not enough arguments" << endl;
-		retVal =  false;
-	}
-
-	return retVal;
+	return nyx_device_info_query(device, cmd.device_info_enum, retVal);
 }

@@ -11,6 +11,47 @@ Nyx-utils provides a command line tool 'nyx-cmd' to call the nyx library
 device types and commands within them.
 To see command line options call 'nyx-cmd' without parameters.
 
+How to extend
+=============
+
+## Adding stream output modules
+
+- inherit new module from NyxCmdOutput and override virtual functions
+  you need. Base class has two variables to control output ('printErrorEnabled'
+  and 'printOutputEnabled'). Please support those in all new modules.
+- add an enumeration for your new module to nyx/_cmd/_output.h
+- add your new module to factory function in nyx/_cmd/_output.cpp
+- add your new files to nyx-cmd/CMakeLists.txt
+
+## Adding new command modules
+
+- add your new files to nyx-cmd-modules/<module>/CMakeLists.txt
+
+### Query only type module
+
+- inherit from NyxCmdQueryCommand
+- if your module only queries for strings you need to implement pure virtual
+  functions only
+- if your module queries for other type of data too, you need to implement
+  other virtual functions as well
+- add Nyx specific enumeration type to union in nyx/_cmd/_command.h
+- add a new constructor to struct in nyx/_cmd/_command.h
+
+### Other types of modules
+
+- inherit from NyxCmdCommand
+- implement all virtual functions
+- handle argument parsing in 'Execute' function
+- consider using 'commandUsage' struct from nyx/_cmd/_command.h
+
+## Adding new Device types
+
+- inherit from NyxCmdDeviceType
+- implement all virtual functions
+- add new command modules as specified in 2)
+- add your new files to nyx-cmd-modules/<module>/CMakeLists.txt
+- add your new module to nyx-cmd-modules/CMakeLists.txt
+
 How to build
 ===========
 

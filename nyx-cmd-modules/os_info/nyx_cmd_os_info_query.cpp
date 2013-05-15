@@ -24,7 +24,6 @@
 #include <cstring>
 #include <cstdlib>
 #include <map>
-#include <getopt.h>
 
 using namespace std;
 
@@ -52,96 +51,24 @@ string NyxCmdOSInfoQuery::Name()
 	return string("query");
 }
 
-/*
-* Execute command.
-* Resolves command parameters from the command line arguments.
-*/
-int NyxCmdOSInfoQuery::Execute(const char *deviceId, int argc, char **argv)
+void NyxCmdOSInfoQuery::initCommandMap(nyx_device_type_t &devType, std::map<std::string,commandUsage> &commandMap)
 {
-	nyx_device_handle_t device = NULL;
-	nyx_os_info_query_t infoType;
-	nyx_error_t error = NYX_ERROR_GENERIC;
-
-	bool argSuccess = resolveArguments(argc, argv, &infoType);
-
-	if(argSuccess)
-	{
-		error = nyx_init();
-
-		if(NYX_ERROR_NONE == error)
-		{
-			error = nyx_device_open(NYX_DEVICE_OS_INFO, deviceId, &device);
-
-			if(NULL != device)
-			{
-				const char* retVal;
-
-				error = nyx_os_info_query(device, infoType, &retVal);
-
-				switch(error)
-				{
-					case NYX_ERROR_NONE:
-						cout << retVal << endl;
-						break;
-					case NYX_ERROR_NOT_IMPLEMENTED:
-						cerr << "Error: Query not implemented" << endl;
-						break;
-					case NYX_ERROR_DEVICE_UNAVAILABLE:
-						cerr << "Error: Device or value not available" << endl;
-						break;
-					default:
-						cerr << "Error: Error " << error << " in executing query" << endl;
-						break;
-				}
-
-				nyx_device_close(device);
-			}
-		}
-		else
-		{
-			cerr << "Error: Error initializing Nyx" << endl;
-		}
-
-		nyx_deinit();
-
-	}
-
-	return (NYX_ERROR_NONE == error)? 0 : -1;
+	devType = NYX_DEVICE_OS_INFO;
+	commandMap["core_os_kernel_config"] = commandUsage(NYX_OS_INFO_CORE_OS_KERNEL_CONFIG, "Return Core OS kernel config");
+	commandMap["core_os_kernel_version"] = commandUsage(NYX_OS_INFO_CORE_OS_KERNEL_VERSION, "Return Core OS kernel version info");
+	commandMap["core_os_name"] = commandUsage(NYX_OS_INFO_CORE_OS_NAME, "Return Core OS name");
+	commandMap["core_os_release"] = commandUsage(NYX_OS_INFO_CORE_OS_RELEASE, "Return Core OS release info");
+	commandMap["core_os_release_codename"] = commandUsage(NYX_OS_INFO_CORE_OS_RELEASE_CODENAME, "Return Core OS release codename");
+	commandMap["webos_api_version"] = commandUsage(NYX_OS_INFO_WEBOS_API_VERSION, "Return webOS API version");
+	commandMap["webos_build_id"] = commandUsage(NYX_OS_INFO_WEBOS_BUILD_ID, "Return webOS build ID");
+	commandMap["webos_imagename"] = commandUsage(NYX_OS_INFO_WEBOS_IMAGENAME, "Return webOS imagename");
+	commandMap["webos_name"] = commandUsage(NYX_OS_INFO_WEBOS_NAME, "Return webOS name");
+	commandMap["webos_prerelease"] = commandUsage(NYX_OS_INFO_WEBOS_PRERELEASE, "Return webOS prerelease info");
+	commandMap["webos_release"] = commandUsage(NYX_OS_INFO_WEBOS_RELEASE, "Return webOS release info");
+	commandMap["webos_release_codename"] = commandUsage(NYX_OS_INFO_WEBOS_RELEASE_CODENAME, "Return webOS release codename");
 }
 
-/*
-* Parses the command line arguments and resolves them to proper variables.
-* If return value is 'false', query might not hold a valid value.
-*/
-bool NyxCmdOSInfoQuery::resolveArguments(int argc, char **argv, nyx_os_info_query_t *query)
+nyx_error_t NyxCmdOSInfoQuery::nyxQuery(nyx_device_handle_t device, commandUsage::command_enum_t cmd, const char** retVal)
 {
-	bool retVal = true;
-	const map<string,commandUsage> queryArgs =  queryArgsTable::initialize();
-
-	if (optind < argc && NULL != query)
-	{
-		//Arguments
-		char *argumentStr = argv[optind++];
-
-		// get the iterator
-		map<string, commandUsage>::const_iterator iter = queryArgs.find(string(argumentStr));
-
-		if (queryArgs.end() != iter)
-		{
-			*query = iter->second.commandEnum;
-			retVal = true;
-		}
-		else
-		{
-			cerr << "Error: Unknown argument" << endl;
-			retVal = false;
-		}
-	}
-	else
-	{
-		cerr << "Error: Not enough arguments" << endl;
-		retVal = false;
-	}
-
-	return retVal;
+	return nyx_os_info_query(device, cmd.os_info_enum, retVal);
 }

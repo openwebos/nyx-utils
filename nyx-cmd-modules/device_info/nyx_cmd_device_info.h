@@ -1,6 +1,7 @@
 // @@@LICENSE
 //
 //      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2013 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,21 +28,8 @@
  */
 
 #include "nyx_cmd_devicetype.h"
-#include <nyx/nyx_client.h>
-#include <nyx/common/nyx_device.h>
 
 #include <string>
-
-struct commandUsage
-{
-	nyx_device_info_type_t commandEnum;
-	std::string commandStr;
-
-	// default constructor
-	commandUsage(){};
-	commandUsage(nyx_device_info_type_t cmd, const std::string &str)
-	             :commandEnum(cmd), commandStr(str) {};
-};
 
 class NyxCmdDeviceInfo : public NyxCmdDeviceType
 {

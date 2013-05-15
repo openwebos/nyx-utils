@@ -21,46 +21,11 @@
 start on stopped finish
 
 script
-    # parse list of query command arguments
-    #
-    # $1 = device type. e.g. DeviceInfo
-    print_query_list()
-    {
-        nyx-cmd $1 -? |
-        awk 'BEGIN { args_found = 0 } {
-            if ( $0 == "QUERY" ) { args_found = 1 }
-            if ( args_found == 1 && $2 != "" ) { print $1 }
-        }'
-    }
-
-    # $1 = device type. e.g. DeviceInfo
-    # $2 = target json file path
-    generate_json()
-    {
-        echo "{" > $2
-
-        # enable non-zero exit codes for nyx-cmd
-        set +e
-        for i in `print_query_list $1`; do
-            val=`nyx-cmd $1 query $i`
-            if [ $? = 0 ]; then
-                echo "    \"$i\": \"$val\"," >> $2
-            fi
-        done
-
-        #disable non-zero exit codes
-        set -e
-        # remote last comma to make valid json
-        sed -i '$ s/,$//' $2
-
-        echo "}" >> $2
-    }
-
     mkdir -p @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx
 
     # generate /var/run/nyx/device_info.json
-    generate_json DeviceInfo @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/device_info.json
+    nyx-cmd DeviceInfo query --format=json > @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/device_info.json
 
     # generate /var/run/nyx/os_info.json
-    generate_json OSInfo @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/os_info.json
+    nyx-cmd OSInfo query --format=json $(nyx-cmd OSInfo query -l | grep -E -w -v 'core_os_kernel_config' | grep -E -w -v 'storage_free') > @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/os_info.json
 end script

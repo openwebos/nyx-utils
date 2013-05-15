@@ -1,6 +1,7 @@
 // @@@LICENSE
 //
 //      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2013 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,6 +35,11 @@
 
 class NyxCmdDeviceType
 {
+/**
+* @defgroup nyx_cmd_device_type nyx-cmd DeviceType base class.
+* @ingroup nyx_cmd_base_classes
+* @{
+*/
 	private:
 /**
  * Resolve arguments given to executeCommand function.
@@ -45,11 +51,7 @@ class NyxCmdDeviceType
  *
  */
 		char *resolveArguments(int argc, char **argv);
-/**
-* @defgroup nyx_cmd_devicetype nyx-cmd device type base class
-* @ingroup nyx_cmd
-* @{
-*/
+
 	public:
 /**
  * Class constructor.
@@ -90,6 +92,15 @@ class NyxCmdDeviceType
  *
  */
 		virtual std::string Version();
+
+/**
+ * Get the device type specific options.
+ * This virtual function may be implemented by all nyx-cmd device type plugins (e.g. system)
+ *
+ * @return Options for the device type
+ *
+ */
+		virtual std::string Options();
 
 /**
  * Get the device type specific description.

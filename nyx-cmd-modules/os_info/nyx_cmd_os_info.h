@@ -32,17 +32,6 @@
 
 #include <string>
 
-struct commandUsage
-{
-	nyx_os_info_query_t commandEnum;
-	std::string commandStr;
-
-	// default constructor
-	commandUsage(){};
-	commandUsage(nyx_os_info_query_t cmd, const std::string& str)
-	             :commandEnum(cmd), commandStr(str) {};
-};
-
 class NyxCmdOSInfo : public NyxCmdDeviceType
 {
 /**

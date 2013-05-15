@@ -32,53 +32,29 @@
 #include <nyx/nyx_client.h>
 #include <nyx/common/nyx_device.h>
 
-#include "nyx_cmd_command.h"
+#include "nyx_cmd_query_command.h"
 #include "nyx_cmd_device_info.h"
 
-struct queryArgsTable
-{
-	static const std::map<std::string,commandUsage> initialize()
-	{
-		const std::map<std::string,commandUsage> getArgsMap;
-		getArgsMap["board_type"] = commandUsage(NYX_DEVICE_INFO_BOARD_TYPE, "Return board type");
-		getArgsMap["bt_addr"] = commandUsage(NYX_DEVICE_INFO_BT_ADDR, "Return BT address");
-		getArgsMap["device_name"] = commandUsage(NYX_DEVICE_INFO_DEVICE_NAME, "Return name");
-		getArgsMap["hardware_id"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_ID, "Return hardware ID");
-		getArgsMap["hardware_revision"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_REVISION, "Return hardware revision");
-		getArgsMap["installer"] = commandUsage(NYX_DEVICE_INFO_INSTALLER, "Return installer");
-		getArgsMap["keyboard_type"] = commandUsage(NYX_DEVICE_INFO_KEYBOARD_TYPE, "Return keyboard type");
-		getArgsMap["modem_present"] = commandUsage(NYX_DEVICE_INFO_MODEM_PRESENT, "Return modem availability");
-		getArgsMap["nduid"] = commandUsage(NYX_DEVICE_INFO_NDUID, "Return NDUID");
-		getArgsMap["product_id"] = commandUsage(NYX_DEVICE_INFO_PRODUCT_ID, "Return product ID");
-		getArgsMap["radio_type"] = commandUsage(NYX_DEVICE_INFO_RADIO_TYPE, "Return radio type");
-		getArgsMap["ram_size"] = commandUsage(NYX_DEVICE_INFO_RAM_SIZE, "Return RAM size");
-		getArgsMap["serial_number"] = commandUsage(NYX_DEVICE_INFO_SERIAL_NUMBER, "Return serial number");
-		getArgsMap["storage_free"] = commandUsage(NYX_DEVICE_INFO_STORAGE_FREE, "Return free storage size");
-		getArgsMap["storage_size"] = commandUsage(NYX_DEVICE_INFO_STORAGE_SIZE, "Return storage size");
-		getArgsMap["wifi_addr"] = commandUsage(NYX_DEVICE_INFO_WIFI_ADDR, "Return WiFi MAC address");
-		return getArgsMap;
-	}
-};
-
-class NyxCmdDeviceInfoQuery : public NyxCmdCommand
+class NyxCmdDeviceInfoQuery : public NyxCmdQueryCommand
 {
 /**
 * @defgroup nyx_cmd_device_info_query nyx-cmd Device info device type query command
 * @ingroup nyx_cmd_device_info_module
 * @{
 */
-	private:
+	protected:
 /**
- * Resolve arguments given to Execute function.
+ * Executes a single query.
  *
- * @param[in]   argc - number of arguments
- * @param[in]   argv - list of arguments
- * @param[out]  type - Type of information queried if function successful
+ * @param[in]	device   - Nyx device handle
+ * @param[in]	cmd      - command to be queried
+ * @param[out]	retVal   - Returned string from query
  *
- * @return true if 'type' was set, false if not
+ * @return error from Nyx calls. NYX_ERROR_NONE if no error
  *
  */
-		bool resolveArguments(int argc, char **argv, nyx_device_info_type_t *type);
+		nyx_error_t nyxQuery(nyx_device_handle_t device, commandUsage::command_enum_t cmd, const char** retVal);
+
 	public:
 /**
  * Class constructor.
@@ -102,16 +78,13 @@ class NyxCmdDeviceInfoQuery : public NyxCmdCommand
 		std::string Name();
 
 /**
- * Execute the command. Full argument list is expected.
+ * Initializes command map for the command.
  *
- * @param[in]   deviceId - device identifier
- * @param[in]   argc     - number of arguments
- * @param[in]   argv     - list of arguments
- *
- * @return -1 if error, 0 if no error.
+ * @param[in]	devType		- Nyx device type
+ * @param[out]	commandMap	- Initialized commandMap
  *
  */
-		int Execute(const char *deviceId, int argc, char** argv);
+		void initCommandMap(nyx_device_type_t &devType, std::map<std::string,commandUsage> &commandMap);
 /** @} */
 };
 

@@ -17,6 +17,7 @@
 # LICENSE@@@
 
 set(moduleName ${NYX_CMD_MODULE_PREFIX}OSInfo)
-add_library(${moduleName} SHARED nyx_cmd_os_info.cpp nyx_cmd_os_info_query.cpp)
+add_library(${moduleName} SHARED nyx_cmd_os_info.cpp
+                                 nyx_cmd_os_info_query.cpp)
 target_link_libraries(${moduleName} ${NYXLIB_LDFLAGS})
 nyx_cmd_install_library(${moduleName})

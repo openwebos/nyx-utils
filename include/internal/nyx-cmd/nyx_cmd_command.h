@@ -1,6 +1,7 @@
 // @@@LICENSE
 //
 //      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2013 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,15 +28,48 @@
 #define __NYXCMDCOMMAND_H__
 
 #include <string>
+#include <nyx/nyx_client.h>
+#include <nyx/common/nyx_device.h>
+
+/**
+ * Structure for different nyx-cmd commands.
+ *
+ * Has an union for command enums (from Nyx API) and usage string.
+ * If you add support for a new Nyx device type, consider adding specific
+ * enum type also to this union and a constructor for commandUsage struct.
+ *
+ */
+struct commandUsage
+{
+	union command_enum_t
+	{
+		nyx_device_info_type_t device_info_enum;
+		nyx_os_info_query_t os_info_enum;
+	};
+
+	command_enum_t commandEnum;
+	std::string commandStr;
+
+	// default constructor
+	commandUsage(){};
+	commandUsage(nyx_device_info_type_t cmd, const std::string &str)
+	             :commandStr(str){commandEnum.device_info_enum = cmd;};
+	commandUsage(nyx_os_info_query_t cmd, const std::string &str)
+	             :commandStr(str){commandEnum.os_info_enum = cmd;};
+};
 
 class NyxCmdCommand
 {
 /**
+* @defgroup nyx_cmd_base_classes nyx-cmd base classes
+* @ingroup nyx_cmd_modules
 * @defgroup nyx_cmd_command nyx-cmd command base class.
-* @ingroup nyx_cmd
+* @ingroup nyx_cmd_base_classes
 * @{
 */
+
 	public:
+
 /**
  * Get the description of the command functionality.
  * This virtual function needs to be implemented by command classes (e.g. reboot)
@@ -75,6 +109,7 @@ class NyxCmdCommand
  *
  */
 		virtual std::string Version();
+
 /** @} */
 };
 

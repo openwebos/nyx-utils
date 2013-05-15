@@ -1,6 +1,7 @@
 # @@@LICENSE
 #
 #      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+#      Copyright (c) 2013 LG Electronics, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +23,11 @@ set(CMAKE_INSTALL_RPATH ${NYX_CMD_MODULE_DIR})
 
 add_executable(nyx-cmd ${SRC} main.cpp
                               nyx_cmd_devicetype.cpp
-                              nyx_cmd_command.cpp)
+                              nyx_cmd_command.cpp
+                              nyx_cmd_output.cpp
+                              nyx_cmd_output_json.cpp
+                              nyx_cmd_output_shell.cpp
+                              nyx_cmd_query_command.cpp)
 
 target_link_libraries(nyx-cmd dl ${NYXLIB_LDFLAGS})
 

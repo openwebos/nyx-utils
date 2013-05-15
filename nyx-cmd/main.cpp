@@ -67,22 +67,22 @@ static void listImplementations(void);
 static void usage(void)
 {
 	printf("usage:\n");
-	printf("nyx-cmd [OPTION] [DEVICE-TYPE [COMMAND [ARGS]...]]\n");
-	printf("OPTION\n");
+	printf("nyx-cmd [OPTIONS] [DEVICE-TYPE [COMMAND [ARGS]...]]\n");
+	printf("OPTIONS\n");
 	printf("  -v, --version\t\t\tDisplay version of nyx-cmd when no other\n");
 	printf("\t\t\t\targuments are present.\n");
 	printf("\t\t\t\tDisplay version of device type module when DEVICE-TYPE\n");
 	printf("\t\t\t\tis specified.\n");
 	printf("  -i, --id\t\t\tSet the device identifier (e.g. -iMyDevId).\n");
 	printf("\t\t\t\tUnless specified, uses 'Main'.\n");
-	printf("  -?, --help\t\t\tUsage guidance.\n");
+	printf("  -h, --help\t\t\tUsage guidance.\n");
 	printf("\t\t\t\tDisplay usage guidance of device type module when\n");
 	printf("\t\t\t\tDEVICE-TYPE is specified.\n");
 	printf("  -l, --list\t\t\tList installed device type modules.\n");
 	printf("DEVICE-TYPE\n");
 	printf("  E.g. System\n");
 	printf("COMMAND\n");
-	printf("  Maps onto one of the functions within the selected API.\n");
+	printf("  Maps onto one of the functions within the API for the specified DEVICE-TYPE.\n");
 	printf("  Requires a value for DEVICE-TYPE.\n");
 	printf("ARGS\n");
 	printf("  COMMAND specific argument lists.\n");
@@ -91,7 +91,7 @@ static void usage(void)
 
 static void printVersion()
 {
-	fprintf(stderr, "%s\n", NYX_CMD_VERSION_INFO);
+	printf("%s\n", NYX_CMD_VERSION_INFO);
 }
 
 static char *resolveArguments(int argc, char **argv)
@@ -99,11 +99,13 @@ static char *resolveArguments(int argc, char **argv)
 	int c;
 	char *devType = NULL;
 
+	opterr = 0;
+
 	static struct option long_options[] =
 	{
 		{"version", optional_argument, 0, 'v' },
 		{"id", required_argument, 0, 'i' },
-		{"help", optional_argument, 0, '?' },
+		{"help", optional_argument, 0, 'h' },
 		{"list", no_argument, 0, 'l' },
 		{0, 0, 0, 0 }
 	};
@@ -118,7 +120,9 @@ static char *resolveArguments(int argc, char **argv)
 	{
 		int option_index = 0;
 
-		c = getopt_long(argc, argv, "lvi:?", long_options, &option_index);
+		// Note that the + prevents getopt from permuting the contents of argv and it also stops processing as soon as
+		// a nonoption argument is met. This allows for the device types to have separate option values from the main options.
+		c = getopt_long(argc, argv, "+lvi:h", long_options, &option_index);
 
 		if (c == -1)
 		{
@@ -133,12 +137,15 @@ static char *resolveArguments(int argc, char **argv)
 			case 'v':
 				versionQuery = true;
 				break;
-			case '?':
+			case 'h':
 				usageInfo = true;
 				break;
 			case 'l':
 				listImplementations();
 				break;
+			default:
+				cerr << "Error: Error resolving options" << endl;
+				exit(1);
 		}
 
 	} //while(1)
@@ -211,11 +218,8 @@ int main(int argc, char **argv)
 					{
 						// print out the generic guidance so there's no need to have it in each plugin
 						cout << "Usage for " << devTypeInstance->Description() << endl;
-						cout << "nyx-cmd [OPTION] " << devTypeInstance->Name() << " [COMMAND [ARGS]...]]" << endl;
-						cout << "OPTION" << endl;
-						cout << "  -i, --id\t\t\tSet the device identifier (e.g. -iMyDevId)" << endl;
-						cout << "\t\t\t\tUnless specified, uses 'Main'" << endl;
-						cout << "  -?, --help\t\t\tUsage guidance" << endl;
+						cout << "nyx-cmd [OPTIONS] " << devTypeInstance->Name() << " [COMMAND [ARGS]...]]" << endl;
+						cout << "OPTIONS" << endl << devTypeInstance->Options() << endl;
 						cout << devTypeInstance->Usage() << endl;
 
 						retVal = 0;
@@ -254,7 +258,7 @@ int main(int argc, char **argv)
 			cout << "Error: No available device types" << endl;
 	}
 
-	return (0 == retVal)? 0 : EXIT_FAILURE;
+	return (0 == retVal)? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
 /*
@@ -321,6 +325,7 @@ static void listImplementations(void)
 				nameStr = deviceInstance->Name();
 				// print out the name
 				cout << nameStr << endl;
+				delete deviceInstance;
 			}
 
 			dlclose(lib_handle);

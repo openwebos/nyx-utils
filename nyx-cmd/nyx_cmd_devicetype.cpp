@@ -29,8 +29,6 @@
 #include <getopt.h>
 #include <sstream>
 
-#include <nyx/nyx_client.h>
-
 #include "nyx_cmd_devicetype.h"
 
 using namespace std;
@@ -54,6 +52,19 @@ string NyxCmdDeviceType::Version()
 }
 
 /*
+* Default implementation for Options()
+*
+*/
+string NyxCmdDeviceType::Options()
+{
+	ostringstream options;
+	options << "  -i, --id\t\t\tSet the device identifier (e.g. -iMyDevId)" << endl;
+	options << "\t\t\t\tUnless specified, uses 'Main'" << endl;
+	options << "  -h, --help\t\t\tUsage guidance";
+	return options.str();
+}
+
+/*
 * Default implementation for Usage()
 *
 */
@@ -62,7 +73,6 @@ string NyxCmdDeviceType::Usage()
 	// output empty string
 	return string("");
 }
-
 
 /*
 * Executes the command defined in command line.
@@ -83,6 +93,7 @@ int NyxCmdDeviceType::executeCommand(const char *deviceId, int argc, char **argv
 		if(targetCommand)
 		{
 			err = targetCommand->Execute(deviceId, argc, argv);
+			delete targetCommand;
 		}
 		else
 		{
