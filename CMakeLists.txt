@@ -57,4 +57,8 @@ add_definitions(-DNYX_CMD_VERSION_INFO="${WEBOS_COMPONENT_VERSION}")
 add_subdirectory(nyx-cmd)
 add_subdirectory(nyx-cmd-modules)
 
-webos_build_configured_tree(${CMAKE_SOURCE_DIR}/files/launch UPSTARTCONFDIR)
+# until upstart 1.8 is the default and webos_build_daemon is updated
+# we need to handle its new job file manually
+webos_build_configured_file(files/launch/nyx-utils.conf SYSCONFDIR init)
+
+webos_build_configured_file(files/launch.0311/nyx-utils UPSTARTCONFDIR "")
