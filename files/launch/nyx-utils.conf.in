@@ -18,8 +18,6 @@
 
 start on stopped TV-is-ready
 
-task
-
 script
 	mkdir -p @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx || true
 
