@@ -66,6 +66,7 @@ void NyxCmdOSInfoQuery::initCommandMap(nyx_device_type_t &devType, std::map<std:
 	commandMap["webos_prerelease"] = commandUsage(NYX_OS_INFO_WEBOS_PRERELEASE, "Return webOS prerelease info");
 	commandMap["webos_release"] = commandUsage(NYX_OS_INFO_WEBOS_RELEASE, "Return webOS release info");
 	commandMap["webos_release_codename"] = commandUsage(NYX_OS_INFO_WEBOS_RELEASE_CODENAME, "Return webOS release codename");
+	commandMap["webos_manufacturing_version"] = commandUsage(NYX_OS_INFO_MANUFACTURING_VERSION, "Return webOS manufacting version");
 }
 
 nyx_error_t NyxCmdOSInfoQuery::nyxQuery(nyx_device_handle_t device, commandUsage::command_enum_t cmd, const char** retVal)

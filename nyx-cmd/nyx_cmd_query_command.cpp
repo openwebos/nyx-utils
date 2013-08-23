@@ -232,10 +232,9 @@ nyx_error_t NyxCmdQueryCommand::executeQueries(const char *deviceId,
 							output->printError(outputStream, "Error: Device or value not available");
 							break;
 						default:
-							string tempError("Error: Error ");
-							tempError += string((int)error);
-							tempError += " in executing query";
-							output->printError(outputStream, tempError);
+							ostringstream tempError;
+							tempError << "Error: Error " << error << " in executing query";
+							output->printError(outputStream, tempError.str());
 							break;
 					}
 
