@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2012 Hewlett-Packard Development Company, L.P.
+//      Copyright (c) 2012-2013 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 #define __NYXCMDBATTERYREAD_H__
 
 /**
- * @file nyx_cmd_battery_read.h 
+ * @file nyx_cmd_battery_read.h
  *
  * @brief Implementation class for nyx-cmd Battery device type read command.
  *
