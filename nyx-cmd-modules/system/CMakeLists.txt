@@ -19,6 +19,7 @@
 set(moduleName ${NYX_CMD_MODULE_PREFIX}System)
 add_library(${moduleName} SHARED nyx_cmd_system.cpp
                                  nyx_cmd_system_reboot.cpp
-                                 nyx_cmd_system_shutdown.cpp)
+                                 nyx_cmd_system_shutdown.cpp
+                                 nyx_cmd_system_erase.cpp)                   
 target_link_libraries(${moduleName} ${NYXLIB_LDFLAGS})
 nyx_cmd_install_library(${moduleName})

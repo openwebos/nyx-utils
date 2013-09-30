@@ -19,6 +19,7 @@
 #include "nyx_cmd_system.h"
 #include "nyx_cmd_system_reboot.h"
 #include "nyx_cmd_system_shutdown.h"
+#include "nyx_cmd_system_erase.h"
 
 #include <string>
 #include <sstream>
@@ -42,28 +43,30 @@ string NyxCmdSystem::Description()
 // Usage information for the device type.
 string NyxCmdSystem::Usage()
 {
-	ostringstream usage;
-	usage << "COMMAND" << endl;
-	usage << left << "  " << setw(30) << "system_reboot [ARGS]" << setw(30)
-	      << "Reboots the device" << endl;
-	usage << setw(32) << "  " << setw(50) << "If [ARGS] is not set, defaults to"
-	      << endl;
-	usage << setw(32) << "  " << setw(30) << "'NYX_SYSTEM_NORMAL_SHUTDOWN'"
-	      << endl;
-	usage << "  " << setw(30) << "system_shutdown [ARGS]" << setw(30)
-	      << "Shuts down the device" << endl;
-	usage << setw(32) << "  " << setw(50) << "If [ARGS] is not set, defaults to"
-	      << endl;
-	usage << setw(32) << "  " << setw(30) << "'NYX_SYSTEM_NORMAL_SHUTDOWN'"
-	      << endl;
-	usage << "ARGS" << endl;
-	usage << "  " << setw(30) << "NYX_SYSTEM_NORMAL_SHUTDOWN"  << setw(30)
-	      << "Normal shutdown" << endl;
-	usage << "  " << setw(30) << "NYX_SYSTEM_EMERG_SHUTDOWN"  << setw(30)
-	      << "Emergency shutdown" << endl;
-	usage << "  " << setw(30) << "NYX_SYSTEM_TEST_SHUTDOWN"  << setw(30)
-	      << "Test shutdown" << endl;
-	return usage.str();
+    const char * const usage =
+        "COMMAND\n"
+        "  system_reboot [ARGS]          Reboots the device\n"
+        "                                If [ARGS] is not set, defaults to\n"
+        "                                'NYX_SYSTEM_NORMAL_SHUTDOWN'\n"
+        "  system_shutdown [ARGS]        Shuts down the device\n"
+        "                                If [ARGS] is not set, defaults to\n"
+        "                                'NYX_SYSTEM_NORMAL_SHUTDOWN'\n"
+        "  erase_parition TYPE           Mark one or more partitions to be\n"
+        "                                erased on the next reboot\n"
+        "\n"
+        "ARGS\n"
+        "  NYX_SYSTEM_NORMAL_SHUTDOWN    Normal shutdown\n"
+        "  NYX_SYSTEM_EMERG_SHUTDOWN     Emergency shutdown\n"
+        "  NYX_SYSTEM_TEST_SHUTDOWN      Test shutdown\n"
+        "\n"
+        "TYPE\n"
+        "  media                         Erase user created files, including photos and videos\n"
+        "  var                           Erase installed apps and all app settings and data\n"
+        "  all                           Full erase (factory reset)\n"
+        "  developer                     Erase developer data\n"
+        ;
+
+	return string(usage);
 }
 //! [Usage info]
 
@@ -81,7 +84,10 @@ NyxCmdCommand* NyxCmdSystem::getCommand(string commandName)
 	{
 		return new NyxCmdSystemShutdown();
 	}
-
+    else if(commandName == "erase_partition")
+    {
+        return new NyxCmdSystemErase();
+    }
 	return NULL;
 }
 
