@@ -27,22 +27,26 @@ using namespace std;
 * printOutput print string to output stream
 *
 */
-void NyxCmdOutputShell::printOutput(ostringstream& output,
-                                    const std::string& query_name,
+void NyxCmdOutputShell::printOutput(ostringstream &output,
+                                    const std::string &query_name,
                                     std::string query_value)
 {
-	if(printOutputEnabled)
+	if (printOutputEnabled)
+	{
 		output << query_name << "='" << query_value << "'" << endl;
+	}
 }
 
 /*
 * printOutput print an integer to output stream
 *
 */
-void NyxCmdOutputShell::printOutput(ostringstream& output,
-                                   const std::string& query_name,
-                                   const int& query_value)
+void NyxCmdOutputShell::printOutput(ostringstream &output,
+                                    const std::string &query_name,
+                                    const int &query_value)
 {
-	if(printOutputEnabled)
+	if (printOutputEnabled)
+	{
 		output << query_name << "='" << query_value << "'" << endl;
+	}
 }

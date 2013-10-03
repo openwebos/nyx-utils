@@ -57,9 +57,9 @@ string NyxCmdBattery::Description()
 * Returns the command object instance by for defined name.
 * Implemented command names and their class initiations are added here.
 */
-NyxCmdCommand* NyxCmdBattery::getCommand(string commandName)
+NyxCmdCommand *NyxCmdBattery::getCommand(string commandName)
 {
-	if(commandName == "readall")
+	if (commandName == "readall")
 	{
 		return new NyxCmdBatteryRead();
 	}
@@ -69,7 +69,7 @@ NyxCmdCommand* NyxCmdBattery::getCommand(string commandName)
 
 extern "C"
 {
-	NyxCmdDeviceType* getNyxCmdDeviceTypeInstance()
+	NyxCmdDeviceType *getNyxCmdDeviceTypeInstance()
 	{
 		return new NyxCmdBattery();
 	}

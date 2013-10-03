@@ -38,15 +38,20 @@ string NyxCmdOSInfo::Usage()
 	ostringstream usage;
 
 	usage << "COMMAND" << endl;
-	usage << left << "  " << setw(30) << "query [QUERY-OPTIONS] [QUERY]" << setw(30) << "Query OS information" << endl;
-	usage << left << setw(32) << "" << "If [QUERY] not specified, returns all information" << endl;
+	usage << left << "  " << setw(30) << "query [QUERY-OPTIONS] [QUERY]" << setw(
+	          30) << "Query OS information" << endl;
+	usage << left << setw(32) << "" <<
+	      "If [QUERY] not specified, returns all information" << endl;
 	usage << "QUERY-OPTIONS" << endl;
-	usage << left << "  " << setw(30) << "--format=FORMAT" << setw(30) << "Set output format (e.g. --format=json)" << endl;
+	usage << left << "  " << setw(30) << "--format=FORMAT" << setw(
+	          30) << "Set output format (e.g. --format=json)" << endl;
 	usage << left << setw(32) << "" << "json - output in 'JSON' format" << endl;
 	usage << left << setw(32) << "" << "plain - output in 'plain' format" << endl;
 	usage << left << setw(32) << "" << "shell - output in 'shell' format" << endl;
-	usage << left << setw(32) << "" << "Defaults to 'plain' if 'format' option is left out" << endl;
-	usage << left << "  " << setw(30) << "-l, --list" << setw(30) << "List available command targets" << endl;
+	usage << left << setw(32) << "" <<
+	      "Defaults to 'plain' if 'format' option is left out" << endl;
+	usage << left << "  " << setw(30) << "-l, --list" << setw(
+	          30) << "List available command targets" << endl;
 	usage << left << setw(32) << "" << "(e.g. nyx-cmd OSInfo query -l)" << endl;
 	usage << "QUERY" << endl;
 
@@ -54,12 +59,13 @@ string NyxCmdOSInfo::Usage()
 	std::map<string, commandUsage> tempMap;
 	nyx_device_type_t tempType;
 
-	NyxCmdOSInfoQuery().initCommandMap(tempType,tempMap);
+	NyxCmdOSInfoQuery().initCommandMap(tempType, tempMap);
 
-	for(std::map<string, commandUsage>::const_iterator itr = tempMap.begin();
-	    itr != tempMap.end(); ++itr)
+	for (std::map<string, commandUsage>::const_iterator itr = tempMap.begin();
+	        itr != tempMap.end(); ++itr)
 	{
-		usage << left << "  " << setw(30) <<  itr->first << setw(30) << itr->second.commandStr << endl;
+		usage << left << "  " << setw(30) <<  itr->first << setw(
+		          30) << itr->second.commandStr << endl;
 	}
 
 	return usage.str();
@@ -75,11 +81,11 @@ string NyxCmdOSInfo::Description()
 * Returns the command object instance by for defined name.
 * Implemented command names and their class initiations are added here.
 */
-NyxCmdCommand* NyxCmdOSInfo::getCommand(string commandName)
+NyxCmdCommand *NyxCmdOSInfo::getCommand(string commandName)
 {
 	nyx_error_t error = NYX_ERROR_GENERIC;
 
-	if(commandName == "query")
+	if (commandName == "query")
 	{
 		return new NyxCmdOSInfoQuery();
 	}
@@ -89,7 +95,7 @@ NyxCmdCommand* NyxCmdOSInfo::getCommand(string commandName)
 
 extern "C"
 {
-	NyxCmdDeviceType* getNyxCmdDeviceTypeInstance()
+	NyxCmdDeviceType *getNyxCmdDeviceTypeInstance()
 	{
 		return new NyxCmdOSInfo();
 	}

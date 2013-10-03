@@ -53,28 +53,44 @@ string NyxCmdDeviceInfoQuery::Name()
 }
 
 void NyxCmdDeviceInfoQuery::initCommandMap(nyx_device_type_t &devType,
-                                           std::map<std::string,commandUsage> &commandMap)
+        std::map<std::string, commandUsage> &commandMap)
 {
 	devType = NYX_DEVICE_DEVICE_INFO;
-	commandMap["board_type"] = commandUsage(NYX_DEVICE_INFO_BOARD_TYPE, "Return board type");
-	commandMap["bt_addr"] = commandUsage(NYX_DEVICE_INFO_BT_ADDR, "Return Bluetooth address");
-	commandMap["device_name"] = commandUsage(NYX_DEVICE_INFO_DEVICE_NAME, "Return device name");
-	commandMap["hardware_id"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_ID, "Return hardware ID");
-	commandMap["hardware_revision"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_REVISION, "Return hardware revision");
-	commandMap["installer"] = commandUsage(NYX_DEVICE_INFO_INSTALLER, "Return installer");
-	commandMap["keyboard_type"] = commandUsage(NYX_DEVICE_INFO_KEYBOARD_TYPE, "Return keyboard type");
-	commandMap["modem_present"] = commandUsage(NYX_DEVICE_INFO_MODEM_PRESENT, "Return modem availability");
+	commandMap["board_type"] = commandUsage(NYX_DEVICE_INFO_BOARD_TYPE,
+	                                        "Return board type");
+	commandMap["bt_addr"] = commandUsage(NYX_DEVICE_INFO_BT_ADDR,
+	                                     "Return Bluetooth address");
+	commandMap["device_name"] = commandUsage(NYX_DEVICE_INFO_DEVICE_NAME,
+	                            "Return device name");
+	commandMap["hardware_id"] = commandUsage(NYX_DEVICE_INFO_HARDWARE_ID,
+	                            "Return hardware ID");
+	commandMap["hardware_revision"] = commandUsage(
+	                                      NYX_DEVICE_INFO_HARDWARE_REVISION, "Return hardware revision");
+	commandMap["installer"] = commandUsage(NYX_DEVICE_INFO_INSTALLER,
+	                                       "Return installer");
+	commandMap["keyboard_type"] = commandUsage(NYX_DEVICE_INFO_KEYBOARD_TYPE,
+	                              "Return keyboard type");
+	commandMap["modem_present"] = commandUsage(NYX_DEVICE_INFO_MODEM_PRESENT,
+	                              "Return modem availability");
 	commandMap["nduid"] = commandUsage(NYX_DEVICE_INFO_NDUID, "Return NDUID");
-	commandMap["product_id"] = commandUsage(NYX_DEVICE_INFO_PRODUCT_ID, "Return product ID");
-	commandMap["radio_type"] = commandUsage(NYX_DEVICE_INFO_RADIO_TYPE, "Return radio type");
-	commandMap["ram_size"] = commandUsage(NYX_DEVICE_INFO_RAM_SIZE, "Return RAM size");
-	commandMap["serial_number"] = commandUsage(NYX_DEVICE_INFO_SERIAL_NUMBER, "Return serial number");
-	commandMap["storage_free"] = commandUsage(NYX_DEVICE_INFO_STORAGE_FREE, "Return free storage size");
-	commandMap["storage_size"] = commandUsage(NYX_DEVICE_INFO_STORAGE_SIZE, "Return storage size");
-	commandMap["wifi_addr"] = commandUsage(NYX_DEVICE_INFO_WIFI_ADDR, "Return WiFi MAC address");
+	commandMap["product_id"] = commandUsage(NYX_DEVICE_INFO_PRODUCT_ID,
+	                                        "Return product ID");
+	commandMap["radio_type"] = commandUsage(NYX_DEVICE_INFO_RADIO_TYPE,
+	                                        "Return radio type");
+	commandMap["ram_size"] = commandUsage(NYX_DEVICE_INFO_RAM_SIZE,
+	                                      "Return RAM size");
+	commandMap["serial_number"] = commandUsage(NYX_DEVICE_INFO_SERIAL_NUMBER,
+	                              "Return serial number");
+	commandMap["storage_free"] = commandUsage(NYX_DEVICE_INFO_STORAGE_FREE,
+	                             "Return free storage size");
+	commandMap["storage_size"] = commandUsage(NYX_DEVICE_INFO_STORAGE_SIZE,
+	                             "Return storage size");
+	commandMap["wifi_addr"] = commandUsage(NYX_DEVICE_INFO_WIFI_ADDR,
+	                                       "Return WiFi MAC address");
 }
 
-nyx_error_t NyxCmdDeviceInfoQuery::nyxQuery(nyx_device_handle_t device, commandUsage::command_enum_t cmd, const char** retVal)
+nyx_error_t NyxCmdDeviceInfoQuery::nyxQuery(nyx_device_handle_t device,
+        commandUsage::command_enum_t cmd, const char **retVal)
 {
 	return nyx_device_info_query(device, cmd.device_info_enum, retVal);
 }

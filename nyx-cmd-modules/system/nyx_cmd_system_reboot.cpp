@@ -28,7 +28,8 @@
 using namespace std;
 
 static string nameStr = "system_reboot";
-static string descriptionStr =  "Reboots the system.\nTakes reboot reason as an argument.";
+static string descriptionStr =
+    "Reboots the system.\nTakes reboot reason as an argument.";
 
 /*
 * Class constructor
@@ -66,22 +67,23 @@ int NyxCmdSystemReboot::Execute(const char *deviceId, int argc, char **argv)
 
 	shutdownReason = resolveArguments(argc, argv);
 
-	if(shutdownReason != -1)
+	if (shutdownReason != -1)
 	{
 		error = nyx_init();
 
-		if(error == NYX_ERROR_NONE)
+		if (error == NYX_ERROR_NONE)
 		{
 			error = nyx_device_open(NYX_DEVICE_SYSTEM, deviceId, &device);
 
-			if(device != NULL)
+			if (device != NULL)
 			{
 				error = nyx_system_reboot(device, shutdownReason, NULL);
 
-				if(error != NYX_ERROR_NONE)
+				if (error != NYX_ERROR_NONE)
 				{
 					cerr << "Error: Error in rebooting the device." << endl;
 				}
+
 				nyx_device_close(device);
 			}
 		}
@@ -93,13 +95,14 @@ int NyxCmdSystemReboot::Execute(const char *deviceId, int argc, char **argv)
 		nyx_deinit();
 	}
 
-	return (NYX_ERROR_NONE == error)? 0 : -1;
+	return (NYX_ERROR_NONE == error) ? 0 : -1;
 }
 
 /*
 * Parses the command line arguments and resolves them to proper variables.
 */
-nyx_system_shutdown_type_t NyxCmdSystemReboot::resolveArguments(int argc, char **argv)
+nyx_system_shutdown_type_t NyxCmdSystemReboot::resolveArguments(int argc,
+        char **argv)
 {
 	// defaults to 'NYX_SYSTEM_NORMAL_SHUTDOWN' for cases there isn't any parameters
 	// Unknown arguments are still considered invalid.
@@ -110,22 +113,22 @@ nyx_system_shutdown_type_t NyxCmdSystemReboot::resolveArguments(int argc, char *
 		//Arguments
 		char *argumentStr = argv[optind++];
 
-		if( strcmp(argumentStr, "NYX_SYSTEM_NORMAL_SHUTDOWN") == 0)
+		if (strcmp(argumentStr, "NYX_SYSTEM_NORMAL_SHUTDOWN") == 0)
 		{
 			retVal = NYX_SYSTEM_NORMAL_SHUTDOWN;
 		}
-		else if( strcmp(argumentStr, "NYX_SYSTEM_EMERG_SHUTDOWN") == 0 )
+		else if (strcmp(argumentStr, "NYX_SYSTEM_EMERG_SHUTDOWN") == 0)
 		{
 			retVal = NYX_SYSTEM_EMERG_SHUTDOWN;
 		}
-		else if( strcmp(argumentStr, "NYX_SYSTEM_TEST_SHUTDOWN") == 0 )
+		else if (strcmp(argumentStr, "NYX_SYSTEM_TEST_SHUTDOWN") == 0)
 		{
 			retVal = NYX_SYSTEM_TEST_SHUTDOWN;
 		}
 		else
 		{
 			cerr << "Error: Unknown argument" << endl;
-			retVal = (nyx_system_shutdown_type_t) -1;
+			retVal = (nyx_system_shutdown_type_t) - 1;
 		}
 	}
 

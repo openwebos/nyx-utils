@@ -31,54 +31,54 @@
 
 class NyxCmdOutputJson : public NyxCmdOutput
 {
-/**
-* @defgroup nyx_cmd_output_json nyx-cmd JSON output class.
-* @ingroup nyx_cmd_output_module
-* @{
-*/
-	public:
- /**
- * Begin output operation to stream.
- *
- * @param[in]   output - stream where output is done
- *
- */
-		void beginOutput(std::ostringstream& output);
+	/**
+	* @defgroup nyx_cmd_output_json nyx-cmd JSON output class.
+	* @ingroup nyx_cmd_output_module
+	* @{
+	*/
+public:
+	/**
+	* Begin output operation to stream.
+	*
+	* @param[in]   output - stream where output is done
+	*
+	*/
+	void beginOutput(std::ostringstream &output);
 
-/**
- * Print string to stream.
- *
- * @param[in]   output      - stream where output is done
- * @param[in]   query_name  - query name that is printed to stream
- * @param[in]   query_value - query_value that is printed to stream.
- *                            Copy is made as it might be formatted before
- *                            printing is done
- *
- */
-		void printOutput(std::ostringstream& output,
-		                 const std::string& query_name,
-		                 std::string query_value);
+	/**
+	 * Print string to stream.
+	 *
+	 * @param[in]   output      - stream where output is done
+	 * @param[in]   query_name  - query name that is printed to stream
+	 * @param[in]   query_value - query_value that is printed to stream.
+	 *                            Copy is made as it might be formatted before
+	 *                            printing is done
+	 *
+	 */
+	void printOutput(std::ostringstream &output,
+	                 const std::string &query_name,
+	                 std::string query_value);
 
-/**
- * Print an integer to stream.
- *
- * @param[in]   output      - stream where output is done
- * @param[in]   query_name  - query name that is printed to the stream
- * @param[in]   query_value - integer that is printed to the stream
- *
- */
-		void printOutput(std::ostringstream& output,
-		                 const std::string& query_name,
-		                 const int& query_value);
+	/**
+	 * Print an integer to stream.
+	 *
+	 * @param[in]   output      - stream where output is done
+	 * @param[in]   query_name  - query name that is printed to the stream
+	 * @param[in]   query_value - integer that is printed to the stream
+	 *
+	 */
+	void printOutput(std::ostringstream &output,
+	                 const std::string &query_name,
+	                 const int &query_value);
 
-/**
- * Finalize output operation to stream.
- *
- * @param[in]   output - stream where output is done
- *
- */
-		void finalizeOutput(std::ostringstream& output);
+	/**
+	 * Finalize output operation to stream.
+	 *
+	 * @param[in]   output - stream where output is done
+	 *
+	 */
+	void finalizeOutput(std::ostringstream &output);
 
-/** @} */
+	/** @} */
 };
 #endif // __NYXCMDOUTPUTSHELL_H__

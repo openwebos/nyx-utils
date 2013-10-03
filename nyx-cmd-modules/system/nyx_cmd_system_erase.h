@@ -31,56 +31,56 @@
 
 class NyxCmdSystemErase: public NyxCmdCommand
 {
-/**
-* @defgroup nyx_cmd_system_reboot nyx-cmd System device type reboot command
-* @ingroup nyx_cmd_system_module
-* @{
-*/
-	private:
-/**
- * Resolve arguments given to Execute function.
- *
- * @param[in]   argc - number of arguments
- * @param[in]   argv - list of arguments
- *
- * @return Shutdown type value, -1 if error
- *
- */
-		nyx_system_erase_type_t resolveArguments(int argc, char **argv);
-	public:
-/**
- * Class constructor.
- *
- */
-		NyxCmdSystemErase(void);
-/**
- * Get the description of the command functionality.
- *
- * @return String containing description of the functionality.
- *
- */
-		std::string Description();
+	/**
+	* @defgroup nyx_cmd_system_reboot nyx-cmd System device type reboot command
+	* @ingroup nyx_cmd_system_module
+	* @{
+	*/
+private:
+	/**
+	 * Resolve arguments given to Execute function.
+	 *
+	 * @param[in]   argc - number of arguments
+	 * @param[in]   argv - list of arguments
+	 *
+	 * @return Shutdown type value, -1 if error
+	 *
+	 */
+	nyx_system_erase_type_t resolveArguments(int argc, char **argv);
+public:
+	/**
+	 * Class constructor.
+	 *
+	 */
+	NyxCmdSystemErase(void);
+	/**
+	 * Get the description of the command functionality.
+	 *
+	 * @return String containing description of the functionality.
+	 *
+	 */
+	std::string Description();
 
-/**
- * Get the name for command. This will be compared against the command line arguments
- *
- * @return String containing command name.
- *
- */
-		std::string Name();
+	/**
+	 * Get the name for command. This will be compared against the command line arguments
+	 *
+	 * @return String containing command name.
+	 *
+	 */
+	std::string Name();
 
-/**
- * Execute the command. Full argument list is expected.
- *
- * @param[in]   deviceId - device identifier
- * @param[in]   argc     - number of arguments
- * @param[in]   argv     - list of arguments
- *
- * @return error value from command. 0 if no error.
- *
- */
-		int Execute(const char *deviceId, int argc, char** argv);
-/** @} */
+	/**
+	 * Execute the command. Full argument list is expected.
+	 *
+	 * @param[in]   deviceId - device identifier
+	 * @param[in]   argc     - number of arguments
+	 * @param[in]   argv     - list of arguments
+	 *
+	 * @return error value from command. 0 if no error.
+	 *
+	 */
+	int Execute(const char *deviceId, int argc, char **argv);
+	/** @} */
 };
 
 #endif // __NYXCMDSYSTEMERASE_H__

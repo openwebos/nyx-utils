@@ -27,19 +27,21 @@ using namespace std;
 * beginOutput begins JSON style output
 *
 */
-void NyxCmdOutputJson::beginOutput(ostringstream& output)
+void NyxCmdOutputJson::beginOutput(ostringstream &output)
 {
-	if(printOutputEnabled)
+	if (printOutputEnabled)
+	{
 		output << "{" << endl;
+	}
 }
 
 /*
 * finalizeOutput finalizes JSON output and prints out to cout
 *
 */
-void NyxCmdOutputJson::finalizeOutput(ostringstream& output)
+void NyxCmdOutputJson::finalizeOutput(ostringstream &output)
 {
-	if(printOutputEnabled)
+	if (printOutputEnabled)
 	{
 		//remove final ','
 		string tempCpy = output.str();
@@ -54,16 +56,16 @@ void NyxCmdOutputJson::finalizeOutput(ostringstream& output)
 * printOutput print string to output stream
 *
 */
-void NyxCmdOutputJson::printOutput(ostringstream& output,
-                                   const std::string& query_name,
+void NyxCmdOutputJson::printOutput(ostringstream &output,
+                                   const std::string &query_name,
                                    std::string query_value)
 {
-	if(printOutputEnabled)
+	if (printOutputEnabled)
 	{
 		ReplaceStringInPlace(query_value, "\n", "\\n");
 		ReplaceStringInPlace(query_value, "\"", "\\\"");
 		output << "    \"" << query_name << "\": \"" << query_value
-			   << "\"," << endl;
+		       << "\"," << endl;
 	}
 }
 
@@ -71,11 +73,11 @@ void NyxCmdOutputJson::printOutput(ostringstream& output,
 * printOutput print an integer to output stream
 *
 */
-void NyxCmdOutputJson::printOutput(ostringstream& output,
-                                   const std::string& query_name,
-                                   const int& query_value)
+void NyxCmdOutputJson::printOutput(ostringstream &output,
+                                   const std::string &query_name,
+                                   const int &query_value)
 {
-	if(printOutputEnabled)
+	if (printOutputEnabled)
 	{
 		output << "    \"" << query_name << "\": " << query_value << endl;
 	}

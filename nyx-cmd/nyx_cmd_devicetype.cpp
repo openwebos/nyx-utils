@@ -81,15 +81,17 @@ string NyxCmdDeviceType::Usage()
 * Cast to proper base class type.
 * Call execute comand.
 */
-int NyxCmdDeviceType::executeCommand(const char *deviceId, int argc, char **argv)
+int NyxCmdDeviceType::executeCommand(const char *deviceId, int argc,
+                                     char **argv)
 {
 	int err = -1;
 	char *command = resolveArguments(argc, argv);
 
 	if (command != NULL)
 	{
-		NyxCmdCommand* targetCommand = getCommand(command);
-		if(targetCommand)
+		NyxCmdCommand *targetCommand = getCommand(command);
+
+		if (targetCommand)
 		{
 			err = targetCommand->Execute(deviceId, argc, argv);
 			delete targetCommand;
@@ -100,7 +102,9 @@ int NyxCmdDeviceType::executeCommand(const char *deviceId, int argc, char **argv
 		}
 	}
 	else
-		throw(1);
+	{
+		throw (1);
+	}
 
 	return err;
 }

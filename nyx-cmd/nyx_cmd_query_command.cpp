@@ -65,28 +65,33 @@ int NyxCmdQueryCommand::resolveArguments(int argc, char **argv)
 
 		switch (c)
 		{
-			// format is a long option only and in index 0
+				// format is a long option only and in index 0
 			case 'f':
 				output = NyxCmdOutput::createNyxCmdOutput(optarg);
 
-				if(NULL == output)
+				if (NULL == output)
+				{
 					retVal = RESOLVE_ARGS_FAILED;
+				}
+
 				break;
+
 			case 'l':
 				retVal = RESOLVE_ARGS_LIST_ALL_QUERIES;
 				break;
-			// all that are not recognized make the function fail
+
+				// all that are not recognized make the function fail
 			default:
 				retVal = RESOLVE_ARGS_FAILED;
 				break;
 		}
 	}
 
-	if(RESOLVE_ARGS_INVALID == retVal)
+	if (RESOLVE_ARGS_INVALID == retVal)
 	{
 		// check if there is still arguments left
 		// there wasn't so it's a query for all
-		if(0 == (argc - optind))
+		if (0 == (argc - optind))
 		{
 			retVal = RESOLVE_ARGS_EXECUTE_ALL_QUERIES;
 		}
@@ -111,28 +116,35 @@ int NyxCmdQueryCommand::Execute(const char *deviceId, int argc, char **argv)
 	output = NULL;
 
 	// initialize command specific enums and usage strings if it is empty
-	if(commandMap.empty())
+	if (commandMap.empty())
+	{
 		initCommandMap(nyxDevType, commandMap);
+	}
 
 	int argIndex = resolveArguments(argc, argv);
 
 	// initialize a default output if not initialized from arguments
-	if(NULL==output)
+	if (NULL == output)
+	{
 		output = NyxCmdOutput::createNyxCmdOutput();
+	}
 
-	switch(argIndex)
+	switch (argIndex)
 	{
 		case RESOLVE_ARGS_INVALID:
 		case RESOLVE_ARGS_FAILED:
 			cerr << "Error: Error resolving arguments" << endl;
 			break;
+
 		case RESOLVE_ARGS_LIST_ALL_QUERIES:
 			listAllQueries();
 			error = NYX_ERROR_NONE;
 			break;
+
 		case RESOLVE_ARGS_EXECUTE_ALL_QUERIES:
 			error = executeQueries(deviceId, argIndex, argc, argv, true);
 			break;
+
 		default:
 			error = executeQueries(deviceId, argIndex, argc, argv, false);
 			break;
@@ -143,7 +155,7 @@ int NyxCmdQueryCommand::Execute(const char *deviceId, int argc, char **argv)
 
 	commandMap.clear();
 
-	return (NYX_ERROR_NONE == error)? 0 : -1;
+	return (NYX_ERROR_NONE == error) ? 0 : -1;
 }
 
 /*
@@ -151,8 +163,8 @@ int NyxCmdQueryCommand::Execute(const char *deviceId, int argc, char **argv)
 */
 void NyxCmdQueryCommand::listAllQueries()
 {
-	for(std::map<string, commandUsage>::const_iterator itr = commandMap.begin();
-	    itr != commandMap.end(); ++itr)
+	for (std::map<string, commandUsage>::const_iterator itr = commandMap.begin();
+	        itr != commandMap.end(); ++itr)
 	{
 		cout << itr->first << endl;
 	}
@@ -162,8 +174,8 @@ void NyxCmdQueryCommand::listAllQueries()
 * Executes a Nyx query. Default implementation will return 'NYX_ERROR_NOT_IMPLEMENTED'
 */
 nyx_error_t NyxCmdQueryCommand::nyxQuery(nyx_device_handle_t device,
-                                         commandUsage::command_enum_t cmd,
-                                         const char** retVal)
+        commandUsage::command_enum_t cmd,
+        const char **retVal)
 {
 	*retVal = "";
 	return NYX_ERROR_NOT_IMPLEMENTED;
@@ -173,9 +185,9 @@ nyx_error_t NyxCmdQueryCommand::nyxQuery(nyx_device_handle_t device,
 * Executes queries. Default implementation queries for single strings
 */
 nyx_error_t NyxCmdQueryCommand::executeQueries(const char *deviceId,
-                                               int startIndex, int argc,
-                                               char** argv,
-                                               bool allQueries)
+        int startIndex, int argc,
+        char **argv,
+        bool allQueries)
 {
 	nyx_device_handle_t device = NULL;
 	nyx_os_info_query_t infoType;
@@ -184,53 +196,59 @@ nyx_error_t NyxCmdQueryCommand::executeQueries(const char *deviceId,
 
 	error = nyx_init();
 
-	if(NYX_ERROR_NONE == error && NULL != output)
+	if (NYX_ERROR_NONE == error && NULL != output)
 	{
 		error = nyx_device_open(nyxDevType, deviceId, &device);
 
-		if(NULL != device)
+		if (NULL != device)
 		{
 			ostringstream outputStream;
-			const char* retVal;
+			const char *retVal;
 			bool keepPrinting = true;
 			int failCount = 0;
 			std::map<string, commandUsage>::const_iterator iter = commandMap.begin();
 
-			if(allQueries)
+			if (allQueries)
+			{
 				output->printErrorEnabled = false;
+			}
 
 			output->beginOutput(outputStream);
 
-			while(keepPrinting)
+			while (keepPrinting)
 			{
 				// 'allQueries' controls how the iterator is fetched
 				// when it's false then you find the iterator based on strings
-				if(false == allQueries)
+				if (false == allQueries)
 				{
 					iter = commandMap.find(string(argv[startIndex++]));
+
 					// when there is no more arguments, stop printing
-					if(0 == (argc-startIndex))
+					if (0 == (argc - startIndex))
 					{
 						keepPrinting = false;
 					}
 				}
 
-				if(commandMap.end() != iter)
+				if (commandMap.end() != iter)
 				{
 					error = nyxQuery(device, iter->second.commandEnum, &retVal);
 
-					switch(error)
+					switch (error)
 					{
 						case NYX_ERROR_NONE:
 							output->printOutput(outputStream, iter->first, retVal);
 							finalError = NYX_ERROR_NONE;
 							break;
+
 						case NYX_ERROR_NOT_IMPLEMENTED:
 							output->printError(outputStream, "Error: Query not implemented");
 							break;
+
 						case NYX_ERROR_DEVICE_UNAVAILABLE:
 							output->printError(outputStream, "Error: Device or value not available");
 							break;
+
 						default:
 							ostringstream tempError;
 							tempError << "Error: Error " << error << " in executing query";
@@ -239,30 +257,38 @@ nyx_error_t NyxCmdQueryCommand::executeQueries(const char *deviceId,
 					}
 
 					// when 'allQueries' is true, iterator is looped
-					if(allQueries)
+					if (allQueries)
 					{
 						// stop outputting if final
-						if(commandMap.end() == ++iter)
+						if (commandMap.end() == ++iter)
+						{
 							keepPrinting = false;
+						}
 					}
 				}
 				else
 				{
-					if(false == allQueries)
+					if (false == allQueries)
 						// increment failcount for all other cases than 'query all'
+					{
 						failCount++;
+					}
 				}
 			}
 
 			// don't finalize output if there wasn't even one successful query
 			if (NYX_ERROR_NONE == finalError)
+			{
 				output->finalizeOutput(outputStream);
+			}
 
 			// if there were queries that were not found print the
 			// number of failed queries
 			// NOTE: this is not printed when doing 'query all'
-			if(failCount)
+			if (failCount)
+			{
 				cerr << "Error: " << failCount << " query/queries not found" << endl;
+			}
 
 			nyx_device_close(device);
 		}

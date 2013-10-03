@@ -133,15 +133,19 @@ static char *resolveArguments(int argc, char **argv)
 			case 'i':
 				deviceId = optarg;
 				break;
+
 			case 'v':
 				versionQuery = true;
 				break;
+
 			case 'h':
 				usageInfo = true;
 				break;
+
 			case 'l':
 				listImplementations();
 				break;
+
 			default:
 				cerr << "Error: Error resolving options" << endl;
 				exit(1);
@@ -158,7 +162,7 @@ static char *resolveArguments(int argc, char **argv)
 	// initialize 'deviceId' if not found in parameters
 	if (NULL == deviceId)
 	{
-		deviceId = const_cast<char*>(defaultDevId);
+		deviceId = const_cast<char *>(defaultDevId);
 	}
 
 	return devType;
@@ -170,18 +174,18 @@ int main(int argc, char **argv)
 	int retVal = -1;
 	char *devType = resolveArguments(argc, argv);
 
-	if(versionQuery && usageInfo)
+	if (versionQuery && usageInfo)
 	{
 		// both version query and usage info was wanted, just print usage
 		cout << "Both version query and usage defined, only usage is shown" << endl;
 		versionQuery = false;
 	}
 
-	if(devType)
+	if (devType)
 	{
 		char *error;
 		void *lib_handle;
-		NyxCmdDeviceType* devTypeInstance = NULL;
+		NyxCmdDeviceType *devTypeInstance = NULL;
 		NyxCmdDeviceType* (*initialize)(void);
 
 		//create the plugin path and name
@@ -191,7 +195,7 @@ int main(int argc, char **argv)
 		libName.append(devType);
 		libName.append(".so");
 
-		lib_handle = dlopen( libName.c_str(), RTLD_LAZY);
+		lib_handle = dlopen(libName.c_str(), RTLD_LAZY);
 
 		if (lib_handle)
 		{
@@ -201,23 +205,26 @@ int main(int argc, char **argv)
 			// Get pointer to Instance creation function.
 			// The funtion name is used to identify that we are dealing with
 			// the type of plugin we are interested in.
-			initialize = (NyxCmdDeviceType* (*)(void)) dlsym( lib_handle, "getNyxCmdDeviceTypeInstance" );
+			initialize = (NyxCmdDeviceType * ( *)(void)) dlsym(lib_handle,
+			             "getNyxCmdDeviceTypeInstance");
 
 			if (initialize)
 			{
 				try
 				{
 					devTypeInstance = (*initialize)();
+
 					if (versionQuery)
 					{
 						cout << devTypeInstance->Version() << endl;
 						retVal = 0;
 					}
-					else if(usageInfo)
+					else if (usageInfo)
 					{
 						// print out the generic guidance so there's no need to have it in each plugin
 						cout << "Usage for " << devTypeInstance->Description() << endl;
-						cout << "nyx-cmd [OPTIONS] " << devTypeInstance->Name() << " [COMMAND [ARGS]...]]" << endl;
+						cout << "nyx-cmd [OPTIONS] " << devTypeInstance->Name() <<
+						     " [COMMAND [ARGS]...]]" << endl;
 						cout << "OPTIONS" << endl << devTypeInstance->Options() << endl;
 						cout << devTypeInstance->Usage() << endl;
 
@@ -227,13 +234,16 @@ int main(int argc, char **argv)
 					{
 						retVal = devTypeInstance->executeCommand(deviceId, argc, argv);
 					}
-				} catch (...)
+				}
+				catch (...)
 				{
 					cout << "Error: Error executing command." << endl;
 				}
 
-				if(devTypeInstance)
+				if (devTypeInstance)
+				{
 					delete devTypeInstance;
+				}
 			}
 			else
 			{
@@ -249,15 +259,21 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		if(versionQuery)
+		if (versionQuery)
+		{
 			printVersion();
-		else if(usageInfo)
+		}
+		else if (usageInfo)
+		{
 			usage();
+		}
 		else
+		{
 			cout << "Error: No available device types" << endl;
+		}
 	}
 
-	return (0 == retVal)? EXIT_SUCCESS : EXIT_FAILURE;
+	return (0 == retVal) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
 /*
@@ -269,26 +285,40 @@ static void searchLibraries(string libPath, list<string> &files)
 	struct dirent *dirp;
 	string filenameComparator("lib" NYX_CMD_MODULE_PREFIX);
 
-	if( (libDirectory  = opendir(libPath.c_str()) ) == NULL)
+	if ((libDirectory  = opendir(libPath.c_str())) == NULL)
 	{
-		cout << "Error: Error(" << errno << ") opening plugins directory: " << libPath << endl;
+		cout << "Error: Error(" << errno << ") opening plugins directory: " << libPath
+		     << endl;
 	}
 
 	while ((dirp = readdir(libDirectory)) != NULL)
 	{
-		if ( !strcmp( dirp->d_name, "."  ) ) continue;
-		if ( !strcmp( dirp->d_name, ".." ) ) continue;
-		if ( dirp->d_name[0] == '.' ) continue;
+		if (!strcmp(dirp->d_name, "."))
+		{
+			continue;
+		}
+
+		if (!strcmp(dirp->d_name, ".."))
+		{
+			continue;
+		}
+
+		if (dirp->d_name[0] == '.')
+		{
+			continue;
+		}
 
 		string filename(dirp->d_name);
+
 		// search for libraries starting with nyx-cmd module naming convention
-		if( filename.find(filenameComparator) != -1 &&
-		    filename.substr( filename.find_last_of(".") + 1) == "so" )
+		if (filename.find(filenameComparator) != -1 &&
+		        filename.substr(filename.find_last_of(".") + 1) == "so")
 		{
 			string name(dirp->d_name);
 			files.push_back(name);
 		}
 	}
+
 	closedir(libDirectory);
 }
 
@@ -304,21 +334,22 @@ static void listImplementations(void)
 	searchLibraries(NYX_CMD_MODULE_DIR, files);
 
 	NyxCmdDeviceType* (*initialize)(void);
-	NyxCmdDeviceType* deviceInstance = NULL;
+	NyxCmdDeviceType *deviceInstance = NULL;
 	string nameStr;
 
-	for(list<string>::iterator it = files.begin(); it != files.end(); ++it)
+	for (list<string>::iterator it = files.begin(); it != files.end(); ++it)
 	{
-		lib_handle = dlopen( it->c_str(), RTLD_LAZY);
+		lib_handle = dlopen(it->c_str(), RTLD_LAZY);
 
 		if (lib_handle)
 		{
 			//Clear the error log
 			dlerror();
 
-			initialize = (NyxCmdDeviceType* (*)(void)) dlsym(lib_handle, "getNyxCmdDeviceTypeInstance" );
+			initialize = (NyxCmdDeviceType * ( *)(void)) dlsym(lib_handle,
+			             "getNyxCmdDeviceTypeInstance");
 
-			if (initialize != NULL && (error = dlerror()) == NULL )
+			if (initialize != NULL && (error = dlerror()) == NULL)
 			{
 				deviceInstance = (*initialize)();
 				nameStr = deviceInstance->Name();

@@ -32,49 +32,49 @@
 
 class NyxCmdBattery : public NyxCmdDeviceType
 {
-/**
-* @defgroup nyx_cmd_battery_module nyx-cmd Battery module
-* @ingroup nyx_cmd_modules
-* @defgroup nyx_cmd_battery_devicetype nyx-cmd Battery device type implementation
-* @ingroup nyx_cmd_battery_module
-* @{
-*/
-	protected:
-/**
- * Get the correct command based on input string.
- *
- * @param[in]   cmdName - command name
- *
- * @return Pointer to the command
- *
- */
-		NyxCmdCommand* getCommand(std::string cmdName);
+	/**
+	* @defgroup nyx_cmd_battery_module nyx-cmd Battery module
+	* @ingroup nyx_cmd_modules
+	* @defgroup nyx_cmd_battery_devicetype nyx-cmd Battery device type implementation
+	* @ingroup nyx_cmd_battery_module
+	* @{
+	*/
+protected:
+	/**
+	 * Get the correct command based on input string.
+	 *
+	 * @param[in]   cmdName - command name
+	 *
+	 * @return Pointer to the command
+	 *
+	 */
+	NyxCmdCommand *getCommand(std::string cmdName);
 
-	public :
-/**
- * Get the device type specific usage.
- *
- * @return Usage info for the device type
- *
- */
-		std::string Usage(void);
+public :
+	/**
+	 * Get the device type specific usage.
+	 *
+	 * @return Usage info for the device type
+	 *
+	 */
+	std::string Usage(void);
 
-/**
- * Get the device type specific name.
- *
- * @return Name for the device type
- *
- */
-		std::string Name(void);
+	/**
+	 * Get the device type specific name.
+	 *
+	 * @return Name for the device type
+	 *
+	 */
+	std::string Name(void);
 
-/**
- * Get the device type specific description.
- *
- * @return Description for the device type
- *
- */
-		std::string Description(void);
-/** @} */
+	/**
+	 * Get the device type specific description.
+	 *
+	 * @return Description for the device type
+	 *
+	 */
+	std::string Description(void);
+	/** @} */
 };
 
 #endif // __NYXCMDBATTERY_H__

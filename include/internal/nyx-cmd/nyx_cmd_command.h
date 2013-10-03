@@ -50,66 +50,72 @@ struct commandUsage
 	std::string commandStr;
 
 	// default constructor
-	commandUsage(){};
+	commandUsage() {};
 	commandUsage(nyx_device_info_type_t cmd, const std::string &str)
-	             :commandStr(str){commandEnum.device_info_enum = cmd;};
+		: commandStr(str)
+	{
+		commandEnum.device_info_enum = cmd;
+	};
 	commandUsage(nyx_os_info_query_t cmd, const std::string &str)
-	             :commandStr(str){commandEnum.os_info_enum = cmd;};
+		: commandStr(str)
+	{
+		commandEnum.os_info_enum = cmd;
+	};
 };
 
 class NyxCmdCommand
 {
-/**
-* @defgroup nyx_cmd_base_classes nyx-cmd base classes
-* @ingroup nyx_cmd_modules
-* @defgroup nyx_cmd_command nyx-cmd command base class.
-* @ingroup nyx_cmd_base_classes
-* @{
-*/
+	/**
+	* @defgroup nyx_cmd_base_classes nyx-cmd base classes
+	* @ingroup nyx_cmd_modules
+	* @defgroup nyx_cmd_command nyx-cmd command base class.
+	* @ingroup nyx_cmd_base_classes
+	* @{
+	*/
 
-	public:
+public:
 
-/**
- * Get the description of the command functionality.
- * This virtual function needs to be implemented by command classes (e.g. reboot)
- *
- * @return String containing description of the functionality.
- *
- */
-		virtual std::string Description() = 0;
+	/**
+	 * Get the description of the command functionality.
+	 * This virtual function needs to be implemented by command classes (e.g. reboot)
+	 *
+	 * @return String containing description of the functionality.
+	 *
+	 */
+	virtual std::string Description() = 0;
 
-/**
- * Get the name for command. This will be compared against the command line arguments
- * This virtual function needs to be implemented by command classes (e.g. reboot)
- *
- * @return String containing command name.
- *
- */
-		virtual std::string Name() = 0;
+	/**
+	 * Get the name for command. This will be compared against the command line arguments
+	 * This virtual function needs to be implemented by command classes (e.g. reboot)
+	 *
+	 * @return String containing command name.
+	 *
+	 */
+	virtual std::string Name() = 0;
 
-/**
- * Execute the command. Full argument list is expected.
- * This virtual function needs to be implemented by command classes (e.g. reboot)
- *
- * @param[in]   deviceId - device identifier
- * @param[in]   argc     - number of arguments
- * @param[in]   argv     - list of arguments
- *
- * @return error value from command. 0 if no error.
- *
- */
-		virtual int Execute(const char *deviceId, int argc, char **argv) = 0;
+	/**
+	 * Execute the command. Full argument list is expected.
+	 * This virtual function needs to be implemented by command classes (e.g. reboot)
+	 *
+	 * @param[in]   deviceId - device identifier
+	 * @param[in]   argc     - number of arguments
+	 * @param[in]   argv     - list of arguments
+	 *
+	 * @return error value from command. 0 if no error.
+	 *
+	 */
+	virtual int Execute(const char *deviceId, int argc, char **argv) = 0;
 
-/**
- * Get the command version information.
- * This virtual function may be implemented by command classes (e.g. reboot)
- *
- * @return String containing version information.
- *
- */
-		virtual std::string Version();
+	/**
+	 * Get the command version information.
+	 * This virtual function may be implemented by command classes (e.g. reboot)
+	 *
+	 * @return String containing version information.
+	 *
+	 */
+	virtual std::string Version();
 
-/** @} */
+	/** @} */
 };
 
 #endif // __NYXCMDCOMMAND_H__

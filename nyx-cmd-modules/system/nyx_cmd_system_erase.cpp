@@ -28,7 +28,8 @@
 using namespace std;
 
 static string nameStr = "erase_partition";
-static string descriptionStr =  "Marks one or more logical partitions to be erased on the next reboot";
+static string descriptionStr =
+    "Marks one or more logical partitions to be erased on the next reboot";
 
 /*
 * Class constructor
@@ -66,22 +67,23 @@ int NyxCmdSystemErase::Execute(const char *deviceId, int argc, char **argv)
 
 	eraseType = resolveArguments(argc, argv);
 
-	if(eraseType != -1)
+	if (eraseType != -1)
 	{
 		error = nyx_init();
 
-		if(error == NYX_ERROR_NONE)
+		if (error == NYX_ERROR_NONE)
 		{
 			error = nyx_device_open(NYX_DEVICE_SYSTEM, deviceId, &device);
 
-			if(device != NULL)
+			if (device != NULL)
 			{
 				error = nyx_system_erase_partition(device, eraseType);
 
-				if(error != NYX_ERROR_NONE)
+				if (error != NYX_ERROR_NONE)
 				{
 					cerr << "Error: Error in rebooting the device." << endl;
 				}
+
 				nyx_device_close(device);
 			}
 		}
@@ -93,35 +95,36 @@ int NyxCmdSystemErase::Execute(const char *deviceId, int argc, char **argv)
 		nyx_deinit();
 	}
 
-	return (NYX_ERROR_NONE == error)? 0 : -1;
+	return (NYX_ERROR_NONE == error) ? 0 : -1;
 }
 
 /*
 * Parses the command line arguments and resolves them to proper variables.
 */
-nyx_system_erase_type_t NyxCmdSystemErase::resolveArguments(int argc, char **argv)
+nyx_system_erase_type_t NyxCmdSystemErase::resolveArguments(int argc,
+        char **argv)
 {
 	// No default is allowed given the nature of the command
-	nyx_system_erase_type_t retVal = (nyx_system_erase_type_t) -1;
+	nyx_system_erase_type_t retVal = (nyx_system_erase_type_t) - 1;
 
 	if (optind < argc)
 	{
 		//Arguments
 		char *argumentStr = argv[optind++];
 
-		if( strcmp(argumentStr, "var") == 0)
+		if (strcmp(argumentStr, "var") == 0)
 		{
 			retVal = NYX_SYSTEM_ERASE_VAR;
 		}
-		else if( strcmp(argumentStr, "media") == 0 )
+		else if (strcmp(argumentStr, "media") == 0)
 		{
 			retVal = NYX_SYSTEM_ERASE_MEDIA;
 		}
-		else if( strcmp(argumentStr, "all") == 0 )
+		else if (strcmp(argumentStr, "all") == 0)
 		{
 			retVal = NYX_SYSTEM_ERASE_ALL;
 		}
-		else if( strcmp(argumentStr, "developer") == 0 )
+		else if (strcmp(argumentStr, "developer") == 0)
 		{
 			retVal = NYX_SYSTEM_ERASE_DEVELOPER;
 		}
@@ -130,9 +133,10 @@ nyx_system_erase_type_t NyxCmdSystemErase::resolveArguments(int argc, char **arg
 			cerr << "Error: Unknown argument - " << argumentStr << endl;
 		}
 	}
-    else
-    {
-        cerr << "Error: No default value is defined" << endl;
-    }
+	else
+	{
+		cerr << "Error: No default value is defined" << endl;
+	}
+
 	return retVal;
 }

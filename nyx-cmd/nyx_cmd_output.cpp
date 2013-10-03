@@ -29,7 +29,7 @@ using namespace std;
 * beginOutput Default won't do anything
 *
 */
-void NyxCmdOutput::beginOutput(ostringstream& output)
+void NyxCmdOutput::beginOutput(ostringstream &output)
 {
 }
 
@@ -37,56 +37,65 @@ void NyxCmdOutput::beginOutput(ostringstream& output)
 * printError Default implementation just outputs to cerr.
 *
 */
-void NyxCmdOutput::printError(std::ostringstream& output,
-		                      const std::string& errorString)
+void NyxCmdOutput::printError(std::ostringstream &output,
+                              const std::string &errorString)
 {
-	if(printErrorEnabled)
+	if (printErrorEnabled)
+	{
 		cerr << errorString << endl;
+	}
 }
 
 /*
 * printOutput print string to output stream
 *
 */
-void NyxCmdOutput::printOutput(ostringstream& output,
-                                    const std::string& query_name,
-                                    std::string query_value)
+void NyxCmdOutput::printOutput(ostringstream &output,
+                               const std::string &query_name,
+                               std::string query_value)
 {
-	if(printOutputEnabled)
+	if (printOutputEnabled)
+	{
 		output << query_value << endl;
+	}
 }
 
 /*
 * printOutput print an integer to output stream
 *
 */
-void NyxCmdOutput::printOutput(ostringstream& output,
-                                    const std::string& query_name,
-                                    const int& query_value)
+void NyxCmdOutput::printOutput(ostringstream &output,
+                               const std::string &query_name,
+                               const int &query_value)
 {
-	if(printOutputEnabled)
+	if (printOutputEnabled)
+	{
 		output << query_value << endl;
+	}
 }
 
 /*
 * finalizeOutput Default implementation just outputs the stream
 *
 */
-void NyxCmdOutput::finalizeOutput(ostringstream& output)
+void NyxCmdOutput::finalizeOutput(ostringstream &output)
 {
-	if(printOutputEnabled)
+	if (printOutputEnabled)
+	{
 		cout << output.str();
+	}
 }
 
 /*
 * Searches for 'search' and replaces with 'replace' in place
 *
 */
-void NyxCmdOutput::ReplaceStringInPlace(string& subject,
-                                        const string& search,
-                                        const string& replace)
+void NyxCmdOutput::ReplaceStringInPlace(string &subject,
+                                        const string &search,
+                                        const string &replace)
 {
 	size_t pos = 0;
+
 	while ((pos = subject.find(search, pos)) != string::npos)
 	{
 		subject.replace(pos, search.length(), replace);
@@ -94,38 +103,50 @@ void NyxCmdOutput::ReplaceStringInPlace(string& subject,
 	}
 }
 
-NyxCmdOutput* NyxCmdOutput::createNyxCmdOutput(NyxCmdOutput::output_format_t outputFormat)
+NyxCmdOutput *NyxCmdOutput::createNyxCmdOutput(NyxCmdOutput::output_format_t
+        outputFormat)
 {
-	switch(outputFormat)
+	switch (outputFormat)
 	{
 		case NyxCmdOutput::PLAIN_OUTPUT:
 			return new NyxCmdOutput;
 			break;
+
 		case NyxCmdOutput::JSON_OUTPUT:
 			return new NyxCmdOutputJson;
 			break;
+
 		case NyxCmdOutput::SHELL_OUTPUT:
 			return new NyxCmdOutputShell;
 			break;
+
 		default:
 			return NULL;
 			break;
 	}
 }
 
-NyxCmdOutput* NyxCmdOutput::createNyxCmdOutput(const string& outputFormat)
+NyxCmdOutput *NyxCmdOutput::createNyxCmdOutput(const string &outputFormat)
 {
-	if("json" == outputFormat)
+	if ("json" == outputFormat)
+	{
 		return NyxCmdOutput::createNyxCmdOutput(NyxCmdOutput::JSON_OUTPUT);
-	else if("shell" == outputFormat)
+	}
+	else if ("shell" == outputFormat)
+	{
 		return NyxCmdOutput::createNyxCmdOutput(NyxCmdOutput::SHELL_OUTPUT);
-	else if("plain" == outputFormat)
+	}
+	else if ("plain" == outputFormat)
+	{
 		return NyxCmdOutput::createNyxCmdOutput(NyxCmdOutput::PLAIN_OUTPUT);
+	}
 	else
+	{
 		return NULL;
+	}
 }
 
-NyxCmdOutput* NyxCmdOutput::createNyxCmdOutput()
+NyxCmdOutput *NyxCmdOutput::createNyxCmdOutput()
 {
 	return NyxCmdOutput::createNyxCmdOutput(NyxCmdOutput::PLAIN_OUTPUT);
 }

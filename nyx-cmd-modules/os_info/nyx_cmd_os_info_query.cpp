@@ -51,25 +51,40 @@ string NyxCmdOSInfoQuery::Name()
 	return string("query");
 }
 
-void NyxCmdOSInfoQuery::initCommandMap(nyx_device_type_t &devType, std::map<std::string,commandUsage> &commandMap)
+void NyxCmdOSInfoQuery::initCommandMap(nyx_device_type_t &devType,
+                                       std::map<std::string, commandUsage> &commandMap)
 {
 	devType = NYX_DEVICE_OS_INFO;
-	commandMap["core_os_kernel_config"] = commandUsage(NYX_OS_INFO_CORE_OS_KERNEL_CONFIG, "Return Core OS kernel config");
-	commandMap["core_os_kernel_version"] = commandUsage(NYX_OS_INFO_CORE_OS_KERNEL_VERSION, "Return Core OS kernel version info");
-	commandMap["core_os_name"] = commandUsage(NYX_OS_INFO_CORE_OS_NAME, "Return Core OS name");
-	commandMap["core_os_release"] = commandUsage(NYX_OS_INFO_CORE_OS_RELEASE, "Return Core OS release info");
-	commandMap["core_os_release_codename"] = commandUsage(NYX_OS_INFO_CORE_OS_RELEASE_CODENAME, "Return Core OS release codename");
-	commandMap["webos_api_version"] = commandUsage(NYX_OS_INFO_WEBOS_API_VERSION, "Return webOS API version");
-	commandMap["webos_build_id"] = commandUsage(NYX_OS_INFO_WEBOS_BUILD_ID, "Return webOS build ID");
-	commandMap["webos_imagename"] = commandUsage(NYX_OS_INFO_WEBOS_IMAGENAME, "Return webOS imagename");
-	commandMap["webos_name"] = commandUsage(NYX_OS_INFO_WEBOS_NAME, "Return webOS name");
-	commandMap["webos_prerelease"] = commandUsage(NYX_OS_INFO_WEBOS_PRERELEASE, "Return webOS prerelease info");
-	commandMap["webos_release"] = commandUsage(NYX_OS_INFO_WEBOS_RELEASE, "Return webOS release info");
-	commandMap["webos_release_codename"] = commandUsage(NYX_OS_INFO_WEBOS_RELEASE_CODENAME, "Return webOS release codename");
-	commandMap["webos_manufacturing_version"] = commandUsage(NYX_OS_INFO_MANUFACTURING_VERSION, "Return webOS manufacting version");
+	commandMap["core_os_kernel_config"] = commandUsage(
+	        NYX_OS_INFO_CORE_OS_KERNEL_CONFIG, "Return Core OS kernel config");
+	commandMap["core_os_kernel_version"] = commandUsage(
+	        NYX_OS_INFO_CORE_OS_KERNEL_VERSION, "Return Core OS kernel version info");
+	commandMap["core_os_name"] = commandUsage(NYX_OS_INFO_CORE_OS_NAME,
+	                             "Return Core OS name");
+	commandMap["core_os_release"] = commandUsage(NYX_OS_INFO_CORE_OS_RELEASE,
+	                                "Return Core OS release info");
+	commandMap["core_os_release_codename"] = commandUsage(
+	            NYX_OS_INFO_CORE_OS_RELEASE_CODENAME, "Return Core OS release codename");
+	commandMap["webos_api_version"] = commandUsage(NYX_OS_INFO_WEBOS_API_VERSION,
+	                                  "Return webOS API version");
+	commandMap["webos_build_id"] = commandUsage(NYX_OS_INFO_WEBOS_BUILD_ID,
+	                               "Return webOS build ID");
+	commandMap["webos_imagename"] = commandUsage(NYX_OS_INFO_WEBOS_IMAGENAME,
+	                                "Return webOS imagename");
+	commandMap["webos_name"] = commandUsage(NYX_OS_INFO_WEBOS_NAME,
+	                                        "Return webOS name");
+	commandMap["webos_prerelease"] = commandUsage(NYX_OS_INFO_WEBOS_PRERELEASE,
+	                                 "Return webOS prerelease info");
+	commandMap["webos_release"] = commandUsage(NYX_OS_INFO_WEBOS_RELEASE,
+	                              "Return webOS release info");
+	commandMap["webos_release_codename"] = commandUsage(
+	        NYX_OS_INFO_WEBOS_RELEASE_CODENAME, "Return webOS release codename");
+	commandMap["webos_manufacturing_version"] = commandUsage(
+	            NYX_OS_INFO_MANUFACTURING_VERSION, "Return webOS manufacting version");
 }
 
-nyx_error_t NyxCmdOSInfoQuery::nyxQuery(nyx_device_handle_t device, commandUsage::command_enum_t cmd, const char** retVal)
+nyx_error_t NyxCmdOSInfoQuery::nyxQuery(nyx_device_handle_t device,
+                                        commandUsage::command_enum_t cmd, const char **retVal)
 {
 	return nyx_os_info_query(device, cmd.os_info_enum, retVal);
 }

@@ -31,38 +31,38 @@
 
 class NyxCmdOutputShell : public NyxCmdOutput
 {
-/**
-* @defgroup nyx_cmd_output_shell nyx-cmd shell output class.
-* @ingroup nyx_cmd_output_module
-* @{
-*/
- public:
-/**
- * Print string to stream.
- *
- * @param[in]   output      - stream where output is done
- * @param[in]   query_name  - query name that is printed to stream
- * @param[in]   query_value - query_value that is printed to stream.
- *                            Copy is made as it might be formatted before
- *                            printing is done
- *
- */
-		void printOutput(std::ostringstream& output,
-		                 const std::string& query_name,
-		                 std::string query_value);
+	/**
+	* @defgroup nyx_cmd_output_shell nyx-cmd shell output class.
+	* @ingroup nyx_cmd_output_module
+	* @{
+	*/
+public:
+	/**
+	 * Print string to stream.
+	 *
+	 * @param[in]   output      - stream where output is done
+	 * @param[in]   query_name  - query name that is printed to stream
+	 * @param[in]   query_value - query_value that is printed to stream.
+	 *                            Copy is made as it might be formatted before
+	 *                            printing is done
+	 *
+	 */
+	void printOutput(std::ostringstream &output,
+	                 const std::string &query_name,
+	                 std::string query_value);
 
-/**
- * Print an integer to stream.
- *
- * @param[in]   output      - stream where output is done
- * @param[in]   query_name  - query name that is printed to the stream
- * @param[in]   query_value - integer that is printed to the stream
- *
- */
-		void printOutput(std::ostringstream& output,
-		                 const std::string& query_name,
-		                 const int& query_value);
+	/**
+	 * Print an integer to stream.
+	 *
+	 * @param[in]   output      - stream where output is done
+	 * @param[in]   query_name  - query name that is printed to the stream
+	 * @param[in]   query_value - integer that is printed to the stream
+	 *
+	 */
+	void printOutput(std::ostringstream &output,
+	                 const std::string &query_name,
+	                 const int &query_value);
 
-/** @} */
+	/** @} */
 };
 #endif // __NYXCMDOUTPUTSHELL_H__
