@@ -16,7 +16,7 @@
 #
 # LICENSE@@@
 
-start on stopped TV-is-ready
+start on init-boot-done
 
 script
 	mkdir -p @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx || true
