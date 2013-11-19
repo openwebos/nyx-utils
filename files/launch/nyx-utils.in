@@ -16,14 +16,16 @@
 #
 # LICENSE@@@
 
-start on stopped TV-is-ready
+# -*- mode: shell-script; -*-
+
+start on stopped finish
 
 script
-	mkdir -p @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx || true
+    mkdir -p @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx
 
-	# generate @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/device_info.json
-	nyx-cmd DeviceInfo query --format=json > @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/device_info.json
+    # generate /var/run/nyx/device_info.json
+    nyx-cmd DeviceInfo query --format=json > @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/device_info.json
 
-	# generate i@WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/os_info.json
-	nyx-cmd OSInfo query --format=json $(nyx-cmd OSInfo query -l | grep -E -w -v 'core_os_kernel_config' | grep -E -w -v 'storage_free') > @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/os_info.json
+    # generate /var/run/nyx/os_info.json
+    nyx-cmd OSInfo query --format=json $(nyx-cmd OSInfo query -l | grep -E -w -v 'core_os_kernel_config' | grep -E -w -v 'storage_free') > @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/os_info.json
 end script

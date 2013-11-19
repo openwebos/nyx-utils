@@ -57,3 +57,4 @@ add_subdirectory(nyx-cmd)
 add_subdirectory(nyx-cmd-modules)
 
 webos_build_configured_file(files/launch/nyx-utils.conf SYSCONFDIR init)
+webos_build_configured_file(files/launch/nyx-utils SYSCONFDIR event.d)
