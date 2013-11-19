@@ -22,8 +22,8 @@ project(nyx-utils CXX)
 include(webOS/webOS)
 include(FindPkgConfig)
 
-webos_modules_init(1 0 0 QUALIFIER RC4)
-webos_component(1 0 0)
+webos_modules_init(1 0 0 QUALIFIER RC6)
+webos_component(1 0 1)
 
 pkg_check_modules(NYXLIB REQUIRED nyx)
 include_directories(${NYXLIB_INCLUDE_DIRS})
