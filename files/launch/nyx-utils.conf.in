@@ -16,7 +16,7 @@
 #
 # LICENSE@@@
 
-start on init-boot-done
+start on boot-done
 
 script
 	mkdir -p @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx || true
