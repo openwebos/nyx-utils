@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2013 LG Electronics, Inc.
+//      Copyright (c) 2013-2014 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -80,7 +80,9 @@ void NyxCmdOSInfoQuery::initCommandMap(nyx_device_type_t &devType,
 	commandMap["webos_release_codename"] = commandUsage(
 	        NYX_OS_INFO_WEBOS_RELEASE_CODENAME, "Return webOS release codename");
 	commandMap["webos_manufacturing_version"] = commandUsage(
-	            NYX_OS_INFO_MANUFACTURING_VERSION, "Return webOS manufacting version");
+	        NYX_OS_INFO_WEBOS_MANUFACTURING_VERSION, "Return webOS manufacturing version");
+	commandMap["encryption_key_type"] = commandUsage(
+	        NYX_OS_INFO_ENCRYPTION_KEY_TYPE, "Return encryption key type");
 }
 
 nyx_error_t NyxCmdOSInfoQuery::nyxQuery(nyx_device_handle_t device,
