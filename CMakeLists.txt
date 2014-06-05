@@ -1,6 +1,6 @@
 # @@@LICENSE
 #
-#      Copyright (c) 2012-2013 LG Electronics, Inc.
+#      Copyright (c) 2012-2014 LG Electronics, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ project(nyx-utils CXX)
 include(webOS/webOS)
 include(FindPkgConfig)
 
-webos_modules_init(1 0 0 QUALIFIER RC6)
-webos_component(1 0 1)
+webos_modules_init(1 0 0 QUALIFIER RC7)
+webos_component(1 1 0)
 
 pkg_check_modules(NYXLIB REQUIRED nyx)
 include_directories(${NYXLIB_INCLUDE_DIRS})
