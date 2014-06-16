@@ -23,7 +23,7 @@ include(webOS/webOS)
 include(FindPkgConfig)
 
 webos_modules_init(1 0 0 QUALIFIER RC7)
-webos_component(1 1 0)
+webos_component(1 1 1)
 
 pkg_check_modules(NYXLIB REQUIRED nyx)
 include_directories(${NYXLIB_INCLUDE_DIRS})
@@ -58,3 +58,4 @@ add_subdirectory(nyx-cmd-modules)
 
 webos_build_configured_file(files/launch/nyx-utils.conf SYSCONFDIR init)
 webos_build_configured_file(files/launch/nyx-utils SYSCONFDIR event.d)
+webos_build_configured_file(files/launch/nyx-json-update.sh SYSCONFDIR init/software-update-complete.d)
