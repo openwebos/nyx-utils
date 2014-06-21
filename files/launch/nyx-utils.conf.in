@@ -21,18 +21,9 @@ start on boot-done
 script
 	mkdir -p @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx || true
 
-	if [ -f @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx/nyx-json-update ] || [ ! -f @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx/device_info.json ] || [ ! -f @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx/os_info.json ]; then
-		mkdir -p @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx || true
+	# generate @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/device_info.json
+	nyx-cmd DeviceInfo query --format=json > @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/device_info.json
 
-		# generate @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx/device_info.json
-		nyx-cmd DeviceInfo query --format=json > @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx/device_info.json
-
-		# generate @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx/os_info.json
-		nyx-cmd OSInfo query --format=json $(nyx-cmd OSInfo query -l | grep -E -w -v 'core_os_kernel_config' | grep -E -w -v 'storage_free') > @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx/os_info.json
-
-		rm -f @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx/nyx-json-update
-	fi
-
-	ln -sf @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx/device_info.json @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/device_info.json
-	ln -sf @WEBOS_INSTALL_LOCALSTATEDIR@/cache/nyx/os_info.json @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/os_info.json
+	# generate i@WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/os_info.json
+	nyx-cmd OSInfo query --format=json $(nyx-cmd OSInfo query -l | grep -E -w -v 'core_os_kernel_config' | grep -E -w -v 'storage_free') > @WEBOS_INSTALL_RUNTIMEINFODIR@/nyx/os_info.json
 end script
