@@ -1,4 +1,0 @@
-FLAG_FILE="@WEBOS_INSTALL_LOCALSTATEDIR@/nyx/nyx-json-update"
-
-# Create a flag file to update json files
-touch $FLAG_FILE
