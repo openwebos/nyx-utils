@@ -16,14 +16,7 @@
 #
 # LICENSE@@@
 
-set(moduleName ${NYX_CMD_MODULE_PREFIX}System)
-add_library(${moduleName} SHARED nyx_cmd_system.cpp
-                                 nyx_cmd_system_reboot.cpp
-                                 nyx_cmd_system_shutdown.cpp
-                                 nyx_cmd_system_erase.cpp
-                                 nyx_cmd_system_set_alarm.cpp
-                                 nyx_cmd_system_query_time.cpp
-                                 nyx_cmd_system_query_alarm.cpp
-                                 nyx_cmd_system_suspend.cpp)
-target_link_libraries(${moduleName} ${NYXLIB_LDFLAGS} ${GLIB_LDFLAGS})
+set(moduleName ${NYX_CMD_MODULE_PREFIX}Led)
+add_library(${moduleName} SHARED nyx_cmd_led.cpp nyx_cmd_led_set_brightness.cpp nyx_cmd_led_get_brightness.cpp)
+target_link_libraries(${moduleName} ${NYXLIB_LDFLAGS})
 nyx_cmd_install_library(${moduleName})

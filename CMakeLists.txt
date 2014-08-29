@@ -23,11 +23,15 @@ include(webOS/webOS)
 include(FindPkgConfig)
 
 webos_modules_init(1 0 0 QUALIFIER RC7)
-webos_component(1 1 2)
+webos_component(1 2 0)
 
 pkg_check_modules(NYXLIB REQUIRED nyx)
 include_directories(${NYXLIB_INCLUDE_DIRS})
 webos_add_compiler_flags(ALL ${NYXLIB_CFLAGS_OTHER})
+
+pkg_check_modules(GLIB REQUIRED glib-2.0)
+include_directories(${GLIB_INCLUDE_DIRS})
+webos_add_compiler_flags(ALL ${GLIB_CFLAGS_OTHER})
 
 function(nyx_get_pkgconfig_var varname nyx_pkgconfig_var usecache)
         execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE} --variable=${nyx_pkgconfig_var} nyx

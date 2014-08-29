@@ -1,6 +1,6 @@
 # @@@LICENSE
 #
-#      Copyright (c) 2012-2013 LG Electronics, Inc.
+#      Copyright (c) 2012-2014 LG Electronics, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,3 +37,4 @@ add_subdirectory(system)
 add_subdirectory(device_info)
 add_subdirectory(battery)
 add_subdirectory(os_info)
+add_subdirectory(led)

@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2012-2013 LG Electronics, Inc.
+//      Copyright (c) 2012-2014 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 //
 // LICENSE@@@
 
-#ifndef __NYXCMDSYSTEM_H__
-#define __NYXCMDSYSTEM_H__
+#ifndef NYXCMDSYSTEM_H
+#define NYXCMDSYSTEM_H
 
 /**
  * @file nyx_cmd_system.h
@@ -77,4 +77,4 @@ public :
 	/** @} */
 };
 
-#endif // __NYXCMDSYSTEM_H__
+#endif // NYXCMDSYSTEM_H
