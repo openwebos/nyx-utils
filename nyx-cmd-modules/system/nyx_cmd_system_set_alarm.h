@@ -38,7 +38,7 @@ class NyxCmdSetAlarm : public NyxCmdCommand
 	* @{
 	*/
 private:
-	char* date_time;
+	char* seconds;
         static const int RESOLVE_ARGS_INVALID = -200;
         static const int RESOLVE_ARGS_FAILED = -100;
         static const int RESOLVE_ARGS_BLOCKING = -50;

@@ -68,8 +68,8 @@ int NyxCmdSetAlarm::Execute(const char *deviceId, int argc, char **argv)
 {
 	nyx_device_handle_t device = NULL;
 	nyx_error_t error = NYX_ERROR_NONE;
-	date_time = NULL;
-	time_t alarm_time = -1;
+	seconds = NULL;
+	time_t alarm_time = 0;
 
 	int option = resolveArguments(argc, argv);
 
@@ -83,11 +83,9 @@ int NyxCmdSetAlarm::Execute(const char *deviceId, int argc, char **argv)
 
 		case RESOLVE_ARGS_BLOCKING:
 		case RESOLVE_ARGS_NON_BLOCKING:
-			if (date_time)
+			if (seconds)
 			{
-			        struct tm tm;
-			        strptime(date_time, "%b %d %Y %H:%M:%S", &tm);
-			        alarm_time = mktime(&tm);
+				alarm_time = time(NULL) + strtol(seconds, NULL, 10);
 			}
 			else
 			{
@@ -165,8 +163,8 @@ int NyxCmdSetAlarm::resolveArguments(int argc, char **argv)
 		switch (c)
 		{
 			case 'b':
-				date_time = optarg;
-				if (NULL == date_time)
+				seconds = optarg;
+				if (NULL == seconds)
 				{
 					retval = RESOLVE_ARGS_FAILED;
 				}
@@ -192,8 +190,18 @@ int NyxCmdSetAlarm::resolveArguments(int argc, char **argv)
 		}
 		else
 		{
-			date_time = argv[optind++];
+			seconds = argv[optind++];
 			retval = RESOLVE_ARGS_NON_BLOCKING;
+		}
+	}
+
+	if (seconds)
+	{
+		char* pend="";
+		(void) strtol(seconds, &pend, 10);
+		if ('\0' != *pend)
+		{
+			retval = RESOLVE_ARGS_FAILED;
 		}
 	}
 
