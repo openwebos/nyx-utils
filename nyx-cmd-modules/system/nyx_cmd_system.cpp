@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2012-2013 LG Electronics, Inc.
+//      Copyright (c) 2012-2014 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@
 #include "nyx_cmd_system_reboot.h"
 #include "nyx_cmd_system_shutdown.h"
 #include "nyx_cmd_system_erase.h"
+#include "nyx_cmd_system_set_alarm.h"
+#include "nyx_cmd_system_query_time.h"
+#include "nyx_cmd_system_query_alarm.h"
+#include "nyx_cmd_system_suspend.h"
 
 #include <string>
 #include <sstream>
@@ -27,38 +31,42 @@
 
 using namespace std;
 
-// Name of the device type
 string NyxCmdSystem::Name()
 {
 	return string("System");
 }
 
-// Human readable description of the device type.
 string NyxCmdSystem::Description()
 {
 	return string("Nyx 'System' device type.");
 }
 
-//! [Usage info]
-// Usage information for the device type.
 string NyxCmdSystem::Usage()
 {
 	const char *const usage =
 	    "COMMAND\n"
-	    "  system_reboot [ARGS]          Reboots the device\n"
-	    "                                If [ARGS] is not set, defaults to\n"
-	    "                                'NYX_SYSTEM_NORMAL_SHUTDOWN'\n"
-	    "  system_shutdown [ARGS]        Shuts down the device\n"
-	    "                                If [ARGS] is not set, defaults to\n"
-	    "                                'NYX_SYSTEM_NORMAL_SHUTDOWN'\n"
-	    "  erase_parition TYPE           Mark one or more partitions to be\n"
-	    "                                erased on the next reboot\n"
+	    "  system_reboot [ARGS]               Reboots the device\n"
+	    "                                     If [ARGS] is not set, defaults to\n"
+	    "                                     'NYX_SYSTEM_NORMAL_SHUTDOWN'\n"
+	    "  system_shutdown [ARGS]             Shuts down the device\n"
+	    "                                     If [ARGS] is not set, defaults to\n"
+	    "                                     'NYX_SYSTEM_NORMAL_SHUTDOWN'\n"
+	    "  erase_parition TYPE                Mark one or more partitions to be\n"
+	    "                                     erased on the next reboot\n"
+	    "  set_alarm [ALARM_OPTION] SECONDS   Set the alarm to SECONDS from now.\n"
+	    "                                     If 0 or negative, any existing RTC alarm present will be cleared.\n"
+	    "  query_rtc_time                     Gets the system RTC time.\n"
+	    "  query_next_alarm                   Gets the next system alarm. If no alarm is set, it shows the current time\n"
+	    "  system_suspend                     Suspends the machine. Program will exit only once the machine has been re-awoken.\n"
 	    "\n"
 	    "ARGS\n"
 	    "  NYX_SYSTEM_NORMAL_SHUTDOWN    Normal shutdown\n"
 	    "  NYX_SYSTEM_EMERG_SHUTDOWN     Emergency shutdown\n"
 	    "  NYX_SYSTEM_TEST_SHUTDOWN      Test shutdown\n"
 	    "\n"
+	    "ALARM_OPTION\n"
+            "  -b, --block                   Block till alarm is fired\n"
+            "\n"
 	    "TYPE\n"
 	    "  media                         Erase user created files, including photos and videos\n"
 	    "  var                           Erase installed apps and all app settings and data\n"
@@ -68,12 +76,9 @@ string NyxCmdSystem::Usage()
 
 	return string(usage);
 }
-//! [Usage info]
 
-/*
-* Returns the command object instance by for defined name.
-* Implemented command names and their class initiations are added here.
-*/
+// Returns the command object instance for defined name.
+// Implemented command names and their class initiations are added here.
 NyxCmdCommand *NyxCmdSystem::getCommand(string commandName)
 {
 	if (commandName == "system_reboot")
@@ -88,6 +93,22 @@ NyxCmdCommand *NyxCmdSystem::getCommand(string commandName)
 	{
 		return new NyxCmdSystemErase();
 	}
+        else if (commandName == "set_alarm")
+        {
+                return new NyxCmdSetAlarm();
+        }
+        else if (commandName == "query_next_alarm")
+        {
+                return new NyxCmdQueryAlarm();
+        }
+        else if (commandName == "query_rtc_time")
+        {
+                return new NyxCmdQueryTime();
+        }
+        else if (commandName == "system_suspend")
+        {
+                return new NyxCmdSystemSuspend();
+        }
 
 	return NULL;
 }
