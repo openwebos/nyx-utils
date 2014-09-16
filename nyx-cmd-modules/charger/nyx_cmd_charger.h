@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2012-2014 LG Electronics, Inc.
+//      Copyright (c) 2014 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 //
 // LICENSE@@@
 
-#ifndef NYXCMDBATTERY_H
-#define NYXCMDBATTERY_H
+#ifndef NYXCMDCHARGER_H
+#define NYXCMDCHARGER_H
 
 /**
- * @file nyx_cmd_battery.h
+ * @file nyx_cmd_charger.h
  *
- * @brief Implementation class for nyx-cmd Battery device type.
+ * @brief Implementation class for nyx-cmd Charger device type.
  *
  */
 
@@ -30,13 +30,13 @@
 
 #include <string>
 
-class NyxCmdBattery : public NyxCmdDeviceType
+class NyxCmdCharger : public NyxCmdDeviceType
 {
 	/**
-	* @defgroup nyx_cmd_battery_module nyx-cmd Battery module
+	* @defgroup nyx_cmd_charger_module nyx-cmd Charger module
 	* @ingroup nyx_cmd_modules
-	* @defgroup nyx_cmd_battery_devicetype nyx-cmd Battery device type implementation
-	* @ingroup nyx_cmd_battery_module
+	* @defgroup nyx_cmd_charger_devicetype nyx-cmd Charger device type implementation
+	* @ingroup nyx_cmd_charger_module
 	* @{
 	*/
 protected:
@@ -77,4 +77,4 @@ public :
 	/** @} */
 };
 
-#endif // NYXCMDBATTERY_H
+#endif // NYXCMDCHARGER_H

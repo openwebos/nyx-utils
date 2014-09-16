@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2012-2013 LG Electronics, Inc.
+//      Copyright (c) 2012-2014 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,25 +30,15 @@ using namespace std;
 static string nameStr = "battery_read";
 static string descriptionStr = "Returns device battery information.";
 
-/*
-* Class constructor
-*/
-
 NyxCmdBatteryRead::NyxCmdBatteryRead()
 {
 }
 
-/*
-* Command usage description as a string.
-*/
 string NyxCmdBatteryRead::Description()
 {
 	return descriptionStr;
 }
 
-/*
-* Command name as it will be written on the command line.
-*/
 string NyxCmdBatteryRead::Name()
 {
 	return nameStr;
@@ -146,13 +136,11 @@ string NyxCmdBatteryRead::resolveArguments(int argc, char **argv)
 
 	if (optind < argc)
 	{
-		//Arguments
 		retVal = argv[optind++];
 	}
 	else
 	{
 		cerr << "Error: Not enough arguments" << endl;
-		// return empty string
 	}
 
 	return retVal;

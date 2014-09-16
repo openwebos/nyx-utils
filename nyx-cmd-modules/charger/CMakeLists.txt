@@ -1,6 +1,6 @@
 # @@@LICENSE
 #
-#      Copyright (c) 2012-2014 LG Electronics, Inc.
+#      Copyright (c) 2014 LG Electronics, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 #
 # LICENSE@@@
 
-set(moduleName ${NYX_CMD_MODULE_PREFIX}Battery)
-add_library(${moduleName} SHARED nyx_cmd_battery.cpp nyx_cmd_battery_read.cpp nyx_cmd_battery_register_status.cpp)
+set(moduleName ${NYX_CMD_MODULE_PREFIX}Charger)
+add_library(${moduleName} SHARED nyx_cmd_charger.cpp nyx_cmd_charger_query.cpp nyx_cmd_charger_register.cpp)
 target_link_libraries(${moduleName} ${NYXLIB_LDFLAGS})
 nyx_cmd_install_library(${moduleName})
