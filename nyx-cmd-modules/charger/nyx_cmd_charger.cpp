@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2012-2014 LG Electronics, Inc.
+//      Copyright (c) 2014 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,37 +16,40 @@
 //
 // LICENSE@@@
 
-#include "nyx_cmd_battery.h"
-#include "nyx_cmd_battery_read.h"
-#include "nyx_cmd_battery_register_status.h"
+#include "nyx_cmd_charger.h"
+#include "nyx_cmd_charger_query.h"
+#include "nyx_cmd_charger_register.h"
 
 #include <string>
 #include <sstream>
 
 using namespace std;
 
-static string nameStr = "Battery";
-static string descriptionStr = "Nyx 'Battery' device type.";
+static string nameStr = "Charger";
+static string descriptionStr = "Nyx 'Charger' device type.";
 
-string NyxCmdBattery::Name()
+string NyxCmdCharger::Name()
 {
 	return nameStr;
 }
 
-string NyxCmdBattery::Usage()
+string NyxCmdCharger::Usage()
 {
 	ostringstream usage;
 	usage << "COMMAND" << endl;
-	usage << "  readall [GROUP_ARGS]\t\tRead all values" << endl;
-	usage << "  register_status\t\tRegister to battery status change" << endl;
+	usage << "  query GROUP_ARGS" << endl;
+	usage << "  register REGISTER_ARGS" << endl;
 	usage << "GROUP_ARGS" << endl;
-	usage << "  status\t\t\tBattery status" << endl;
-	usage << "  ctia\t\t\t\tCTIA parameters" << endl;
+	usage << "  status\t\t\tQuery charger status" << endl;
+	usage << "  event\t\t\t\tQuery charging event" << endl;
+	usage << "REGISTER_ARGS" << endl;
+	usage << "  status\t\t\tRegister for charger status change" << endl;
+	usage << "  state\t\t\t\tRegister for charger state change" << endl;
 
 	return usage.str();
 }
 
-string NyxCmdBattery::Description()
+string NyxCmdCharger::Description()
 {
 	return descriptionStr;
 }
@@ -55,15 +58,15 @@ string NyxCmdBattery::Description()
 * Returns the command object instance by for defined name.
 * Implemented command names and their class initiations are added here.
 */
-NyxCmdCommand *NyxCmdBattery::getCommand(string commandName)
+NyxCmdCommand *NyxCmdCharger::getCommand(string commandName)
 {
-	if (commandName == "readall")
+	if (commandName == "query")
 	{
-		return new NyxCmdBatteryRead();
+		return new NyxCmdChargerQuery();
 	}
-	else if (commandName == "register_status")
+	else if (commandName == "register")
 	{
-		return new NyxCmdBatteryRegisterStatus();
+		return new NyxCmdChargerRegister();
 	}
 
 	return NULL;
@@ -73,6 +76,6 @@ extern "C"
 {
 	NyxCmdDeviceType *getNyxCmdDeviceTypeInstance()
 	{
-		return new NyxCmdBattery();
+		return new NyxCmdCharger();
 	}
 }

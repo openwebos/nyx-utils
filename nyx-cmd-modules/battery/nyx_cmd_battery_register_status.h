@@ -1,6 +1,6 @@
 // @@@LICENSE
 //
-//      Copyright (c) 2012-2014 LG Electronics, Inc.
+//      Copyright (c) 2014 LG Electronics, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,42 +16,31 @@
 //
 // LICENSE@@@
 
-#ifndef NYXCMDBATTERYREAD_H
-#define NYXCMDBATTERYREAD_H
+#ifndef NYXCMDBATTERYREGISTERSTATUS_H
+#define NYXCMDBATTERYREGISTERSTATUS_H
 
 /**
- * @file nyx_cmd_battery_read.h
+ * @file nyx_cmd_battery_register_status.h
  *
- * @brief Implementation class for nyx-cmd Battery device type read command.
+ * @brief Implementation class for nyx-cmd Battery device type status register command.
  *
  */
 
 #include <nyx/nyx_client.h>
 
-class NyxCmdBatteryRead : public NyxCmdCommand
+class NyxCmdBatteryRegisterStatus : public NyxCmdCommand
 {
 	/**
-	* @defgroup nyx_cmd_battery_read nyx-cmd Battery device type read command
+	* @defgroup nyx_cmd_battery_register nyx-cmd Battery device type register status command
 	* @ingroup nyx_cmd_battery_module
 	* @{
 	*/
-private:
-	/**
-	 * Resolve arguments given to Execute function.
-	 *
-	 * @param[in]   argc - number of arguments
-	 * @param[in]   argv - list of arguments
-	 *
-	 * @return Battery read operation, empty string if error
-	 *
-	 */
-	std::string resolveArguments(int argc, char **argv);
 public:
 	/**
 	 * Class constructor.
 	 *
 	 */
-	NyxCmdBatteryRead(void);
+	NyxCmdBatteryRegisterStatus(void);
 	/**
 	 * Get the description of the command functionality.
 	 *
@@ -82,4 +71,4 @@ public:
 	/** @} */
 };
 
-#endif // NYXCMDBATTERYREAD_H
+#endif // NYXCMDBATTERYREGISTERSTATUS_H
